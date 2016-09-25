@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EFEFEF">
+
+    <include
+        android:id="@+id/top_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        layout="@layout/title_bar_common" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#28a7e2"
+        android:padding="10dp">
+
+        <com.app.hrms.widget.RoundedImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/user_placeholder"/>
+        
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imgAvatar"
+            android:layout_marginStart="10dp"
+            android:text="@string/username"
+            android:textSize="15sp"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/txtDepartment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:text="@string/department"
+            android:textSize="15sp"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_below="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imgAvatar"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/email"
+            android:textSize="15sp"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_below="@+id/txtDepartment"
+            android:id="@+id/txtPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/position"
+            android:textSize="15sp"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#e9e9e9"/>
+
+    <RelativeLayout
+        android:id="@+id/btnPersonBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_main_info"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/main_info"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btnPersonContract"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_contact_info"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/contact_info"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="35dp"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
+
+    <RelativeLayout
+        android:id="@+id/btnPersonEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_personal_action" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/personal_action"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#e9e9e9"/>
+
+    <RelativeLayout
+        android:id="@+id/btnEducation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_education_info"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/education_info"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btnWorkInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_work_experience" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/work_experience"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#e9e9e9"/>
+
+    <RelativeLayout
+        android:id="@+id/btnTrainInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_training_experience"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/traing_experience"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="35dp"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
+
+    <RelativeLayout
+        android:id="@+id/btnTitleInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_grade_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/grade_title"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btnSkillInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_item_drawable"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/ic_skill_level"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:text="@string/skill_level"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/empty_image"
+            android:src="@mipmap/more_normal" />
+    </RelativeLayout>
+
+</LinearLayout>

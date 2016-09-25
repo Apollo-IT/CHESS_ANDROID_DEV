@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="#28A7E2">
+
+	<LinearLayout
+		android:id="@+id/btnBack"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal"
+		android:layout_alignParentBottom="true"
+		android:padding="10dp">
+
+		<com.app.hrms.widget.ClickEffectImageView
+			android:layout_width="17dp"
+			android:layout_height="22dp"
+			android:src="@mipmap/btn_back_normal"/>
+		<TextView
+			android:id="@+id/imgUserMenu"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"
+			android:textColor="#ffffff"
+			android:text="@string/back" />
+	</LinearLayout>
+    
+    <TextView
+        android:id="@+id/title_text"
+		android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+       	android:layout_marginBottom="7dp"
+        android:gravity="center" 
+        android:textSize="19sp"
+        android:textColor="#ffffff"
+        android:text="发起会话" />
+    
+    <TextView
+     	android:id="@+id/imgMenuBtn"
+       	android:layout_width="wrap_content"
+       	android:layout_height="wrap_content"
+       	android:layout_alignParentBottom="true"
+       	android:layout_alignParentRight="true"
+       	android:layout_marginRight="10dp"
+       	android:layout_marginBottom="12dp"
+       	android:paddingLeft="10dp"
+		android:textSize="17sp"
+		android:textColor="#ffffff"
+       	android:text="登录"
+		android:visibility="gone"/>
+    
+ </RelativeLayout>

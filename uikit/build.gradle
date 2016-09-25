@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    useLibrary 'org.apache.http.legacy'
+
+    compileSdkVersion 23
+    buildToolsVersion buildToolsVer
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res', 'res-ptr']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile fileTree(dir: 'libs', include: '*.jar')
+
+//    // 添加依赖。注意，版本号必须一致。
+//    // 基础功能 (必需)
+//    compile 'uikit/libs/nim-basesdk:2.7.0'
+//    // 音视频需要
+//    compile 'uikit/libs/nim-avchat:2.7.0'
+//    // 全文检索服务需要
+//    compile 'uikit/libs/nim-lucene:2.7.0'
+
+}

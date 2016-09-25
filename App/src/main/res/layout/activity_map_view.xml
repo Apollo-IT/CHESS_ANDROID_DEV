@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <include
+        android:id="@+id/top_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        layout="@layout/title_bar_chat" />
+
+    <com.amap.api.maps2d.MapView
+        android:layout_below="@+id/top_title_bar"
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

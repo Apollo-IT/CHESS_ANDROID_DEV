@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightgray"
+    tools:context="com.bailang.chinaapp.MainActivity">
+
+    <include
+        android:id="@+id/topActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:layout_alignParentTop="true"
+        layout="@layout/title_action_bar18" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topActionBar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/iconText"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:gravity="center"
+                android:background="@drawable/round_rect"
+                android:textSize="@dimen/font_size_17"
+                android:textColor="@color/white"
+                android:text="xi"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/iconText"
+                android:layout_toRightOf="@+id/iconText"
+                android:layout_marginTop="@dimen/margin_5dp"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:text="xiaohua"
+                android:id="@+id/textView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iconText"
+                android:layout_alignBottom="@+id/iconText"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:layout_marginBottom="@dimen/margin_5dp"
+                android:text="[出差] 自由流程"
+                android:id="@+id/textView2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textView2"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_10dp"
+                android:text="18:03" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:layout_below="@+id/iconText"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:background="@color/line_color"/>
+
+            <TextView
+                android:id="@+id/txtView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:text="申请内容"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtView3"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:layout_marginBottom="@dimen/margin_10dp"
+                android:text="fghhhj"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:text="审批结果"/>
+
+            <ImageView
+                android:id="@+id/imgMark"
+                android:layout_width="30dp"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:layout_height="@dimen/margin_45dp"
+                android:layout_below="@+id/textView4"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:src="@mipmap/mark_reduce"/>
+
+            <TextView
+                android:id="@+id/iconText1"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginBottom="@dimen/margin_10dp"
+                android:layout_below="@+id/textView4"
+                android:layout_toRightOf="@+id/imgMark"
+                android:background="@drawable/round_rect1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_16"
+                android:text="小小"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_45dp"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:layout_below="@+id/textView4"
+                android:layout_toRightOf="@+id/iconText1"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:text="小小待审批"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_45dp"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_10dp"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:textSize="@dimen/font_size_27"
+                android:text=">"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EFEFEF">
+
+    <include
+        android:id="@+id/top_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        layout="@layout/title_bar_common" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.app.hrms.widget.ClickEffectImageView
+                    android:id="@+id/btnPrevMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@mipmap/previous_month" />
+
+                <TextView
+                    android:id="@+id/currentMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="2014年6月"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <com.app.hrms.widget.ClickEffectImageView
+                    android:id="@+id/btnNextMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@mipmap/next_month" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/white" >
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week1" />
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week2" />
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week3" />
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week4" />
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week5" />
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week6" />
+
+                <TextView
+                    style="@style/weekName"
+                    android:text="@string/week7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ff8091a8" />
+
+            <ViewFlipper
+                android:id="@+id/flipper"
+                android:layout_width="fill_parent"
+                android:layout_height="350dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:background="#f1f1f4"/>
+
+                <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

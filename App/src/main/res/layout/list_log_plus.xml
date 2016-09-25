@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/titleBar"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:gravity="right|center_vertical"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.app.hrms.widget.ClickEffectImageView
+        android:id="@+id/imgAddLog"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/empty_image"
+        android:src="@mipmap/icon_gray_plus"
+        />
+</LinearLayout>

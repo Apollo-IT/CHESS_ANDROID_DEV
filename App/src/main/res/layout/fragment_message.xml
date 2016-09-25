@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:clickable="true">
+
+    <include
+        android:id="@+id/top_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        layout="@layout/title_bar_messagehistory" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:headerDividersEnabled="false"
+        android:dividerHeight="0dp"
+        android:divider="@android:color/transparent"/>
+
+</LinearLayout>

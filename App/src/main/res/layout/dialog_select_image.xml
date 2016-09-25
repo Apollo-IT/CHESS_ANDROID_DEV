@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customet="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/imgMenuPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/gray_transparent"
+    android:orientation="vertical">
+	
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txtBtnCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="写真を撮る"
+            android:textSize="16sp"
+            android:textColor="#FF333333"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFBBBBBB" />
+
+        <TextView
+            android:id="@+id/txtBtnGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="ライブラリから選択"
+            android:textSize="16sp"
+            android:textColor="#FF333333"/>
+
+	</LinearLayout>
+</LinearLayout>

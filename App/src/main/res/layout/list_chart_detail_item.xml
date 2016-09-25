@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="100">
+    <TextView
+        android:id="@+id/item1_txt"
+        android:layout_width="0dp"
+        android:layout_weight="25"
+        android:layout_height="wrap_content"
+        android:text="姓名"/>
+    <TextView
+        android:id="@+id/item2_txt"
+        android:layout_width="0dp"
+        android:layout_weight="25"
+        android:layout_height="wrap_content"
+        android:text="部门"/>
+    <TextView
+        android:id="@+id/item3_txt"
+        android:layout_width="0dp"
+        android:layout_weight="25"
+        android:layout_height="wrap_content"
+        android:text="时间"/>
+    <TextView
+        android:id="@+id/item4_txt"
+        android:layout_width="0dp"
+        android:layout_weight="25"
+        android:layout_height="wrap_content"
+        android:text="时数"/>
+</LinearLayout>

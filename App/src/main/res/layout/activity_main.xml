@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout"
+    android:background="#EFEFEF">
+
+    <RelativeLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:gravity="bottom"
+        android:background="#e7e8e9">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e1e1e1"/>
+        <LinearLayout
+            android:id="@+id/tab_item_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_centerVertical="true"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:weightSum="4" >
+
+            <RelativeLayout
+                android:id="@+id/btnTab1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTabHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgTabHome"
+                    android:layout_marginTop="2dp"
+                    android:textSize="11sp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/home"
+                    android:textColor="@color/tab_text"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.app.hrms.widget.ClickEffectImageView
+                    android:id="@+id/imgTabHome"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="@string/home"
+                    android:src="@drawable/tab_home_drawable" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnTab2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTabChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgTabChat"
+                    android:layout_marginTop="2dp"
+                    android:textSize="11sp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/news"
+                    android:textColor="@color/tab_text"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.app.hrms.widget.ClickEffectImageView
+                    android:id="@+id/imgTabChat"
+                    android:layout_width="20dp"
+                    android:layout_height="18dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="@string/news"
+                    android:src="@drawable/tab_news_drawable" />
+
+                <com.jauker.widget.BadgeView
+                    android:id="@+id/badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:background="#ee1d23"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnTab3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTabSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgTabSign"
+                    android:layout_marginTop="2dp"
+                    android:textSize="11sp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/signin"
+                    android:textColor="@color/tab_text"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.app.hrms.widget.ClickEffectImageView
+                    android:id="@+id/imgTabSign"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="@string/signin"
+                    android:src="@drawable/tab_sign_drawable" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnTab4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTabSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgTabSetting"
+                    android:layout_marginTop="2dp"
+                    android:textSize="11sp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/settings"
+                    android:textColor="@color/tab_text"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <com.app.hrms.widget.ClickEffectImageView
+                    android:id="@+id/imgTabSetting"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:contentDescription="@string/settings"
+                    android:src="@drawable/tab_settings_drawable" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/container1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tab_container"
+        android:orientation="vertical" >
+
+
+    </LinearLayout>
+
+</RelativeLayout>

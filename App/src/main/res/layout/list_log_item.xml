@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/titleBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtLogStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="13dp"
+        android:background="#A9D18E"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:text="已完成"/>
+
+
+    <TextView
+        android:id="@+id/txtLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:padding="10dp"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:text="This is Log."
+        android:layout_toLeftOf="@+id/txtLogStatus"
+        android:layout_toStartOf="@+id/txtLogStatus"/>
+
+</RelativeLayout>
