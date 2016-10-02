@@ -49,8 +49,6 @@ public class NavigationAmapActivity extends UI implements
 	private TextView sendButton;
 	private MapView mapView;
 
-	private NimLocationManager locationManager = null;
-
 	private LatLng myLatLng;
 	private LatLng desLatLng;
 
@@ -80,7 +78,7 @@ public class NavigationAmapActivity extends UI implements
 		initView();
 		initAmap();
 		initLocation();
-		updateSendStatus();
+//		updateSendStatus();
 	}
 
 	private void initView() {
@@ -111,9 +109,6 @@ public class NavigationAmapActivity extends UI implements
 	}
 
 	private void initLocation() {
-		locationManager = new NimLocationManager(this, this);
-		Location location = locationManager.getLastKnownLocation();
-
 		Intent intent = getIntent();
 		double latitude = intent.getDoubleExtra(LATITUDE, -100);
 		double longitude = intent.getDoubleExtra(LONGITUDE, -100);
@@ -124,38 +119,14 @@ public class NavigationAmapActivity extends UI implements
 			desAddressInfo = getString(R.string.location_address_unkown);
 		}
 
-		float zoomLevel = intent.getIntExtra(ZOOM_LEVEL, DEFAULT_ZOOM_LEVEL);
-
-		if (location == null) {
-			myLatLng = new LatLng(39.90923, 116.397428);
-		} else {
-			myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-		}
-
-		createNavigationMarker();
-		startLocationTimeout();
+		float zoomLevel = intent.getIntExtra(LocationExtras.ZOOM_LEVEL, LocationExtras.DEFAULT_ZOOM_LEVEL);
 
 		CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(desLatLng, zoomLevel, 0, 0));
+		amap.clear();
 		amap.moveCamera(camera);
-	}
-
-	private void startLocationTimeout() {
-		Handler handler = getHandler();
-		handler.removeCallbacks(runnable);
-		handler.postDelayed(runnable, 20 * 1000);// 20s超时
-	}
-
-	private void updateSendStatus() {
-		if (isFinishing()) {
-			return;
-		}
-		if (TextUtils.isEmpty(myAddressInfo)) {
-			setTitle(R.string.location_loading);
-			sendButton.setVisibility(View.GONE);
-		} else {
-			setTitle(R.string.location_map);
-			sendButton.setVisibility(View.GONE);
-		}
+		MarkerOptions options =new MarkerOptions().position(desLatLng).icon(
+				BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+		amap.addMarker(options);
 	}
 
 	@Override
@@ -168,25 +139,18 @@ public class NavigationAmapActivity extends UI implements
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
-		if (locationManager != null) {
-			locationManager.deactive();
-		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
-		locationManager.activate();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		mapView.onDestroy();
-		if (locationManager != null) {
-			locationManager.deactive();
-		}
 	}
 
 	private void navigate() {
@@ -219,8 +183,6 @@ public class NavigationAmapActivity extends UI implements
 				CameraUpdate camera = CameraUpdateFactory.newLatLngBounds(bounds, boundPadding);
 				amap.moveCamera(camera);
 				updateMyMarkerLatLng();
-
-				updateSendStatus();
 			}
 		} else {
 			showLocationFailTip();
@@ -250,7 +212,6 @@ public class NavigationAmapActivity extends UI implements
 		@Override
 		public void run() {
 			showLocationFailTip();
-			updateSendStatus();
 		}
 	};
 

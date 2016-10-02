@@ -114,6 +114,16 @@ public class ApplicationActivity extends AppCompatActivity implements View.OnCli
         });
         adapter = new WorkFlowAdapter(this, R.layout.list_workflow_item, flowList);
         listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                WorkFlow workFlow = ApplicationActivity.this.flowList.get(i);
+                Intent intent =  new Intent(ApplicationActivity.this, AppealDetailActivity.class);
+                intent.putExtra("workflow", workFlow);
+                intent.putExtra("tab", currentTab);
+                startActivity(intent);
+            }
+        });
 
         currentTab = 1;
         curStatus1 = 0;
@@ -223,7 +233,6 @@ public class ApplicationActivity extends AppCompatActivity implements View.OnCli
                 ApplicationActivity.this.flowList.addAll(flowList);
                 adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onFailed(int retcode) {
                 hud.dismiss();

@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.hrms.helper.AuthHelper;
+import com.app.hrms.message.DemoCache;
+import com.app.hrms.message.config.Preferences;
 import com.app.hrms.message.main.helper.SystemMessageUnreadManager;
 import com.app.hrms.message.main.reminder.ReminderItem;
 import com.app.hrms.message.main.reminder.ReminderManager;
@@ -30,14 +32,23 @@ import com.netease.nim.uikit.cache.TeamDataCache;
 import com.netease.nim.uikit.permission.MPermission;
 import com.netease.nim.uikit.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.uinfo.UserInfoObservable;
+import com.netease.nimlib.sdk.AbortableFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.SystemMessageService;
+import com.netease.nimlib.sdk.msg.constant.SystemMessageStatus;
+import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
+import com.netease.nimlib.sdk.msg.model.SystemMessage;
+import com.netease.nimlib.sdk.team.TeamService;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 
@@ -96,6 +107,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         instance = this;
 //        requestBasicPermission();
 
+        String account = Preferences.getUserAccount();
+        String token = Preferences.getUserToken();
+
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
+            wangyiLogin(account, token);
+        }
+
         imgTabHome = (ImageView)findViewById(R.id.imgTabHome);
         imgTabChat = (ImageView)findViewById(R.id.imgTabChat);
         imgTabSign = (ImageView)findViewById(R.id.imgTabSign);
@@ -142,38 +160,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         recentListFragment = new RecentListFragment();
 
         msgLoaded = recentListFragment.msgLoaded;
-
-//        recentListFragment.requestMessages(msgLoaded);
-//        recentListFragment.enableMsgNotification();
-//        recentListFragment.registerObservers(true);
-
     }
-
-    /**
-     * 基本权限管理
-     */
-//    private void requestBasicPermission() {
-//        MPermission.with(MainActivity.this)
-//                .addRequestCode(BASIC_PERMISSION_REQUEST_CODE)
-//                .permissions(
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                        Manifest.permission.READ_EXTERNAL_STORAGE,
-//                        Manifest.permission.CAMERA,
-//                        Manifest.permission.READ_PHONE_STATE,
-//                        Manifest.permission.RECORD_AUDIO,
-//                        Manifest.permission.ACCESS_COARSE_LOCATION,
-//                        Manifest.permission.ACCESS_FINE_LOCATION
-//                )
-//                .request();
-//    }
 
     @Override
     public void onResume() {
         super.onResume();
-        registerObservers(true);
-        registerMsgUnreadInfoObserver(true);
-        registerSystemMessageObservers(true);
-        requestSystemMessageUnreadCount();
     }
 
     public void doLogin() {
@@ -410,6 +401,74 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     };
 
+    //-------------------------------------update-----------------------------------------------------
+    public void registerSystemObserver(boolean register) {
+        NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, register);
+    }
+
+    Observer<SystemMessage> systemMessageObserver = new Observer<SystemMessage>() {
+        @Override
+        public void onEvent(SystemMessage systemMessage) {
+            onSystemNotificationDeal(systemMessage, true);
+        }
+    };
+
+    private void onSystemNotificationDeal(final SystemMessage message, final boolean pass) {
+        RequestCallback callback = new RequestCallback<Void>() {
+            @Override
+            public void onSuccess(Void param) {
+                onProcessSuccess(pass, message);
+            }
+
+            @Override
+            public void onFailed(int code) {
+                onProcessFailed(code, message);
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+
+            }
+        };
+        if (message.getType() == SystemMessageType.TeamInvite) {
+            if (pass) {
+                NIMClient.getService(TeamService.class).acceptInvite(message.getTargetId(), message.getFromAccount()).setCallback(callback);
+            } else {
+                NIMClient.getService(TeamService.class).declineInvite(message.getTargetId(), message.getFromAccount(), "").setCallback(callback);
+            }
+
+        } else if (message.getType() == SystemMessageType.ApplyJoinTeam) {
+            if (pass) {
+                NIMClient.getService(TeamService.class).passApply(message.getTargetId(), message.getFromAccount()).setCallback(callback);
+            } else {
+                NIMClient.getService(TeamService.class).rejectApply(message.getTargetId(), message.getFromAccount(), "").setCallback(callback);
+            }
+        } else if (message.getType() == SystemMessageType.AddFriend) {
+            NIMClient.getService(FriendService.class).ackAddFriendRequest(message.getFromAccount(), pass).setCallback(callback);
+        }
+    }
+
+    private void onProcessSuccess(final boolean pass, SystemMessage message) {
+        SystemMessageStatus status = pass ? SystemMessageStatus.passed : SystemMessageStatus.declined;
+        NIMClient.getService(SystemMessageService.class).setSystemMessageStatus(message.getMessageId(),
+                status);
+        message.setStatus(status);
+//        refreshViewHolder(message);
+    }
+
+    private void onProcessFailed(final int code, SystemMessage message) {
+        if (code == 408) {
+            return;
+        }
+
+        SystemMessageStatus status = SystemMessageStatus.expired;
+        NIMClient.getService(SystemMessageService.class).setSystemMessageStatus(message.getMessageId(),
+                status);
+        message.setStatus(status);
+//        refreshViewHolder(message);
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------------
     /**
      * 查询系统消息未读数
      */
@@ -446,5 +505,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             badgeView.setVisibility(View.VISIBLE);
         }
+    }
+
+    //-----------------------JUC Added----------------------------
+    public void wangyiLogin(final String account, final String token) {
+
+        AbortableFuture<LoginInfo> loginRequest = NIMClient.getService(AuthService.class).login(new LoginInfo(account, token));
+        loginRequest.setCallback(new RequestCallback<LoginInfo>() {
+            @Override
+            public void onSuccess(LoginInfo param) {
+
+                registerObservers(true);
+                registerMsgUnreadInfoObserver(true);
+                registerSystemMessageObservers(true);
+                registerSystemObserver(true);
+                requestSystemMessageUnreadCount();
+                DemoCache.setAccount(account.toLowerCase());
+                saveLoginInfo(account, token);
+            }
+
+            @Override
+            public void onFailed(int code) {
+                if (code == 302 || code == 404) {
+//                    Toast.makeText(LoginActivity.this, R.string.login_failed, Toast.LENGTH_SHORT).show();
+                } else {
+//                    Toast.makeText(LoginActivity.this, "登录失败: " + code, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+//                Toast.makeText(LoginActivity.this, R.string.login_exception, Toast.LENGTH_LONG).show();
+            }
+        });
+        //-------------------------------------------------------------
+    }
+
+    private void saveLoginInfo(final String account, final String token) {
+        Preferences.saveUserAccount(account);
+        Preferences.saveUserToken(token);
     }
 }

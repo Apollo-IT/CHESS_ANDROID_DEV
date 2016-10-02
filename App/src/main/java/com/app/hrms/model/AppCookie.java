@@ -4,6 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.ResponseCode;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
+
+import java.util.List;
+
 public class AppCookie {
 
     private static AppCookie instance = null;
@@ -57,6 +65,24 @@ public class AppCookie {
         editor.remove("password");
         editor.commit();
         isLogin = false;
+        allMessageClear();
+    }
+    public void allMessageClear()
+    {
+        NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
+
+            @Override
+            public void onResult(int code, List<RecentContact> recents, Throwable exception) {
+                if (code != ResponseCode.RES_SUCCESS || recents == null) {
+                    return;
+                }
+                for (RecentContact recent : recents)
+                {
+                    NIMClient.getService(MsgService.class).deleteRecentContact(recent);
+                    NIMClient.getService(MsgService.class).clearChattingHistory(recent.getContactId(), recent.getSessionType());
+                }
+            }
+        });
     }
     public MemberModel getCurrentUser() {
         return member;

@@ -1,8 +1,5 @@
 package com.app.hrms.message.config;
 
-/**
- * Created by Administrator on 9/5/2016.
- */
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -28,9 +25,18 @@ public class Preferences {
         return getString(KEY_USER_TOKEN);
     }
 
+    public static void deleteUserAccount(){
+        deleteString(KEY_USER_ACCOUNT);
+        deleteString(KEY_USER_TOKEN);
+    }
     private static void saveString(String key, String value) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+    private static void deleteString(String key){
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.remove(key);
         editor.commit();
     }
 

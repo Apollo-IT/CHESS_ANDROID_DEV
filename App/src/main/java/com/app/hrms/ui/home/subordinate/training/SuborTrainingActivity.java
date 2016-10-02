@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.app.hrms.R;
 import com.app.hrms.UserSetBaseActivity;
 import com.app.hrms.helper.ResumeHelper;
 import com.app.hrms.helper.TrainingHelper;
+import com.app.hrms.model.AppCookie;
 import com.app.hrms.model.CourseInfo;
 import com.app.hrms.model.MemberModel;
 import com.app.hrms.model.ParamModel;
@@ -22,6 +24,7 @@ import com.app.hrms.ui.home.resume.ResumeActivity;
 import com.app.hrms.ui.home.subordinate.MySubordinateActivity;
 import com.app.hrms.ui.home.training.CourseAdapter;
 import com.app.hrms.ui.home.training.TrainingActivity;
+import com.app.hrms.utils.Urls;
 import com.app.hrms.widget.MonthYearPicker;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 
@@ -32,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SuborTrainingActivity extends UserSetBaseActivity implements View.OnClickListener{
+    private static String WEBVIEW_URL = Urls.BASE_URL + Urls.API_TRAINING_WEBVIEW;
     private TextView txtStartMonth;
     private TextView txtEndMonth;
     private ListView listView;
@@ -39,6 +43,8 @@ public class SuborTrainingActivity extends UserSetBaseActivity implements View.O
     private String begda = "";
     private String endda = "";
     private List<CourseInfo> dataList=new ArrayList<>();
+
+    protected WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +53,8 @@ public class SuborTrainingActivity extends UserSetBaseActivity implements View.O
         txtStartMonth = (TextView)findViewById(R.id.txtStartMonth);
         txtEndMonth = (TextView)findViewById(R.id.txtEndMonth);
         listView = (ListView)findViewById(R.id.listview);
+        webView = (WebView)findViewById(R.id.webview);
+
         findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +66,7 @@ public class SuborTrainingActivity extends UserSetBaseActivity implements View.O
         int year = calendar.get(Calendar.YEAR);
         begda = year + "-01-01";
         endda = year + "-12-31";
+        showChart(begda, endda);
 
         txtStartMonth.setText(year + "年 1月");
         txtEndMonth.setText(year + "年 12月");
@@ -107,6 +116,7 @@ public class SuborTrainingActivity extends UserSetBaseActivity implements View.O
                         txtStartMonth.setText(myp.getSelectedYear() + "年 " + myp.getSelectedMonthName());
                         begda = myp.getSelectedYear() + "-" + (myp.getSelectedMonth() + 1) + "-01";
                         getCourseList(begda, endda);
+                        showChart(begda, endda);
                     }
                 }, null);
                 myp.show();
@@ -124,6 +134,7 @@ public class SuborTrainingActivity extends UserSetBaseActivity implements View.O
                         int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
                         endda = myp.getSelectedYear() + "-" + (myp.getSelectedMonth() + 1) + "-" + daysInMonth;
                         getCourseList(begda, endda);
+                        showChart(begda, endda);
                     }
                 }, null);
                 myp.show();
@@ -148,5 +159,11 @@ public class SuborTrainingActivity extends UserSetBaseActivity implements View.O
                 hud.dismiss();
             }
         });
+    }
+    private void showChart(String begda, String endda){
+        webView.getSettings().setJavaScriptEnabled(true);
+        String url = WEBVIEW_URL + "?memberID=" + AppCookie.getInstance().getCurrentUser().getPernr();
+        url += "&BEGDA="+begda + "&ENDDA=" + endda;
+        webView.loadUrl(url);
     }
 }

@@ -8,10 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.app.hrms.R;
-import com.app.hrms.model.AppCookie;
+import com.app.hrms.helper.TaskHelper;
 import com.app.hrms.model.TaskInfo;
-
-import org.w3c.dom.Text;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 
 public class TaskDetailActivity extends AppCompatActivity implements View.OnClickListener{
     public static final int VIEW_MODE_MY_TASK = 1;
@@ -24,7 +23,11 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
     private TextView taskMemberText;
     private TextView taskContentText;
     private TextView taskMemberTitle;
-    private TextView taskCompleteText;
+
+    private EditText taskExcuteDetailText;
+    private EditText taskExcutePlanText;
+    private TextView taskExcuteStateText;
+    private EditText taskCompleteText;
     private View taskCompleteView;
     private View postButton;
 
@@ -54,8 +57,13 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
         taskMemberText = (TextView)findViewById(R.id.task_member_txt);
         taskContentText = (TextView) findViewById(R.id.task_content_txt);
         taskMemberTitle = (TextView) findViewById(R.id.task_member_title);
-        taskCompleteText = (TextView) findViewById(R.id.task_complete_txt);
+
+        taskExcuteDetailText = (EditText)findViewById(R.id.task_excute_detail_txt);
+        taskExcutePlanText = (EditText)findViewById(R.id.task_excute_plan_state_txt);
+        taskExcuteStateText = (TextView)findViewById(R.id.task_excute_state_txt);
+        taskCompleteText = (EditText)findViewById(R.id.task_complete_txt);
         taskCompleteView = findViewById(R.id.task_complete_view);
+
 
         findViewById(R.id.btnBack).setOnClickListener(this);
         postButton.setOnClickListener(this);
@@ -64,33 +72,44 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
     //                                        Show Task Info
     //----------------------------------------------------------------------------------------------
     private void updateUI(){
+        int status = Integer.valueOf(taskInfo.excuteState);
+
         taskIdText.setText(taskInfo.taskId);
         taskThemeText.setText(taskInfo.taskTheme);
         taskBeDateText.setText(taskInfo.taskStartDate);
         taskEnDateText.setText(taskInfo.taskRegulationDate);
         taskMemberText.setText(taskInfo.excuteName);
         taskContentText.setText(taskInfo.taskDetails);
-        String userid = AppCookie.getInstance().getCurrentUser().getPernr();
-        int status = Integer.valueOf(taskInfo.excuteState);
-        if(viewMode==VIEW_MODE_MY_SENT){
-            taskMemberTitle.setText("任务执行人");
-            taskMemberText.setText(taskInfo.excuteName);
-            if(status<3){
-                postButton.setVisibility(View.GONE);
-            }
-        }else{
-            taskMemberTitle.setText("任务分配人");
-            taskMemberText.setText(taskInfo.fromName);
 
-            if(status==4){
-                postButton.setVisibility(View.GONE);
-            }
-        }
-        if(status<4){
-            taskCompleteView.setVisibility(View.GONE);
+        taskExcuteDetailText.setText(taskInfo.excuteDetail);
+        taskExcutePlanText.setText(taskInfo.excutePlanState);
+        switch (status){
+            case 1:taskExcuteStateText.setText("待完成"); break;
+            case 2:taskExcuteStateText.setText("进行中"); break;
+            case 3:taskExcuteStateText.setText("已完成"); break;
+            case 4:taskExcuteStateText.setText("已评估"); break;
         }
         taskCompleteText.setText(taskInfo.completeState);
 
+        if(viewMode==VIEW_MODE_MY_TASK){
+            taskMemberTitle.setText("任务分配人");
+            taskMemberText.setText(taskInfo.fromName);
+
+            taskCompleteText.setEnabled(false);
+            if(status>=3){
+                taskExcuteDetailText.setEnabled(false);
+                taskExcutePlanText.setEnabled(false);
+            }
+        }else{
+            taskMemberTitle.setText("任务执行人");
+            taskMemberText.setText(taskInfo.excuteName);
+
+            taskExcuteDetailText.setEnabled(false);
+            taskExcutePlanText.setEnabled(false);
+            if(status<3){
+                taskCompleteText.setEnabled(false);
+            }
+        }
     }
     //----------------------------------------------------------------------------------------------
     //                                        Click Events
@@ -106,15 +125,26 @@ public class TaskDetailActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+    //----------------------------------------------------------------------------------------------
+    //                                        Save Task
+    //----------------------------------------------------------------------------------------------
     private void onPostButtonClicked(){
-        if(viewMode==VIEW_MODE_MY_SENT){
-            Intent intent = new Intent(this, TaskResultActivity.class);
-            intent.putExtra("task", taskInfo);
-            startActivity(intent);
-        }else{
-            Intent intent = new Intent(this, TaskResultActivity.class);
-            intent.putExtra("task", taskInfo);
-            startActivity(intent);
-        }
+        taskInfo.excutePlanState = taskExcutePlanText.getText().toString();
+        taskInfo.excuteDetail = taskExcuteDetailText.getText().toString();
+        taskInfo.completeState = taskCompleteText.getText().toString();
+
+        final SVProgressHUD hud = new SVProgressHUD(this);
+        hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
+        TaskHelper.saveTask(this, taskInfo.excuteMember, "P", taskInfo, new TaskHelper.Callback() {
+            @Override
+            public void onSuccess() {
+                hud.dismiss();
+                finish();
+            }
+            @Override
+            public void onFailed(int retcode) {
+                hud.showErrorWithStatus("Fail");
+            }
+        });
     }
 }

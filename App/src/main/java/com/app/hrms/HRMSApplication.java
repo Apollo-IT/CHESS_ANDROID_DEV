@@ -22,19 +22,26 @@ import com.app.hrms.message.config.UserPreferences;
 import com.app.hrms.message.session.NimDemoLocationProvider;
 import com.app.hrms.message.session.SessionHelper;
 import com.app.hrms.message.ui.ChatEmployeeTreeActivity;
+import com.app.hrms.model.MemberModel;
+import com.app.hrms.ui.login.LoginActivity;
 import com.app.hrms.utils.db.DBManaber;
+import com.app.hrms.utils.gps.GPSService;
 import com.netease.nim.uikit.ImageLoaderKit;
 import com.netease.nim.uikit.NimUIKit;
+import com.netease.nim.uikit.cache.DataCacheManager;
 import com.netease.nim.uikit.cache.FriendDataCache;
 import com.netease.nim.uikit.cache.NimUserInfoCache;
 import com.netease.nim.uikit.cache.TeamDataCache;
 import com.netease.nim.uikit.contact.ContactProvider;
 import com.netease.nim.uikit.contact.core.query.PinYin;
 import com.netease.nim.uikit.session.viewholder.MsgViewHolderThumbBase;
+import com.netease.nimlib.sdk.AbortableFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NimStrings;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.avchat.model.AVChatAttachment;
 import com.netease.nimlib.sdk.msg.MessageNotifierCustomization;
@@ -71,12 +78,14 @@ public class HRMSApplication extends MultiDexApplication {
         config.writeDebugLogs(); // Remove for release app
 
         ImageLoader.getInstance().init(config.build());
-        // init app data
+        //------------  init app data
         AppData.init(getApplicationContext());
-        // init db manager
+        //------------ init db manager
         DBManaber.init(getApplicationContext());
-
+        //------------ GPS Service
+        GPSService.init(getApplicationContext());
         //----------------------JUC Chat setting------------------------------------------
+
         DemoCache.setContext(this);
 
         NIMClient.init(this, getLoginInfo(), getOptions());

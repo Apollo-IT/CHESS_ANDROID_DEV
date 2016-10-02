@@ -1,15 +1,22 @@
 package com.app.hrms.sign;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.media.TimedText;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -21,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
 import com.amap.api.maps2d.AMapUtils;
@@ -29,9 +37,14 @@ import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.MyLocationStyle;
 import com.app.hrms.R;
+import com.app.hrms.SplashActivity;
+import com.app.hrms.helper.AddressHelper;
 import com.app.hrms.helper.AppData;
 import com.app.hrms.helper.GetShiftHelper;
 import com.app.hrms.helper.SavePunchInfo;
@@ -45,17 +58,32 @@ import com.app.hrms.message.ui.BaseFragment;
 import com.app.hrms.model.AppCookie;
 import com.app.hrms.model.PT1004;
 import com.app.hrms.model.ShiftInfo;
+import com.app.hrms.ui.home.application.AppealAbsenceActivity;
+import com.app.hrms.ui.home.application.AppealDailyActivity;
+import com.app.hrms.ui.home.application.AppealOvertimeActivity;
+import com.app.hrms.ui.home.application.AppealPunchActivity;
+import com.app.hrms.ui.home.application.AppealTravelActivity;
+import com.app.hrms.ui.home.application.ApplicationActivity;
+import com.app.hrms.utils.Urls;
+import com.app.hrms.utils.gps.GPSService;
+import com.app.hrms.utils.gps.Position;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.netease.nim.uikit.LocationProvider;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 
 import static android.os.Looper.getMainLooper;
 
-public class SignFragment extends BaseFragment implements LocationSource, View.OnClickListener, OnCameraChangeListener, NimLocationListener {
-    private boolean isFirstLoc = true;
-
+public class SignFragment extends BaseFragment implements View.OnClickListener{
     //-- top shift
     private TextView todayText;
     private TextView shiftRangeView;
@@ -80,29 +108,9 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
     private ShiftInfo shiftInfo;
     private String currentLocation = "";
 
-    //----------------------------------JUC ADD-----------------------------------------
-    private ImageView pinView;
-    private View pinInfoPanel;
-    private TextView pinInfoTextView;
-
-    private NimLocationManager locationManager = null;
-
-    private double latitude; // 经度
-    private double longitude; // 维度
-    private String addressInfo; // 对应的地址信息
-
-    private static LocationProvider.Callback callback;
-
-    private double cacheLatitude = -1;
-    private double cacheLongitude = -1;
-    private String cacheAddressInfo;
-
-    AMap amap;
+    private AMap aMap;
+    private TextView locationTextView;
     private MapView mapView;
-
-
-    private boolean locating = true; // 正在定位的时候不用去查位置
-    private NimGeocoder geocoder;
 
 
     /***********************************************************************************************
@@ -114,17 +122,13 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewRoot = inflater.inflate(R.layout.fragment_sign, container, false);
+
         mapView = (MapView) viewRoot.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
+        locationTextView = (TextView)viewRoot.findViewById(R.id.marker_address);
         shiftRangeView = (TextView)viewRoot.findViewById(R.id.time_range_text);
         todayText = (TextView)viewRoot.findViewById(R.id.today_text);
 
-        pinView = (ImageView) viewRoot.findViewById(R.id.location_pin);
-        pinInfoPanel = viewRoot.findViewById(R.id.location_info);
-        pinInfoTextView = (TextView) pinInfoPanel.findViewById(R.id.marker_address);
-
-        pinView.setOnClickListener(this);
-        pinInfoPanel.setOnClickListener(this);
         //---- time in
         timein_area      = viewRoot.findViewById(R.id.in_area);
         timein_icon      = (ImageView)viewRoot.findViewById(R.id.in_icon);
@@ -157,7 +161,12 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
     private void init() {
         getShiftInfo();
         initAmap();
-        initLocation();
+    }
+    private void initAmap() {
+        if (aMap == null) {
+            aMap = mapView.getMap();
+            setUpMap();
+        }
     }
     /***********************************************************************************************
      *                                      Get Shift Info
@@ -198,7 +207,7 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
         timein_area.setVisibility(View.VISIBLE);
         if(status==0){
             timein_over_text.setVisibility(View.GONE);
-            timein_location.setText(addressInfo);
+            timein_location.setText(currentLocation);
         }else{
             timein_icon.setImageResource(R.mipmap.icon_sign_0);
             timein_time_text.setText(df.format(new Date(AppData.getTimeIn())));
@@ -256,6 +265,32 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
         }catch (Exception ex){}
         return 0L;
     }
+    private void request(){
+        final String[] typeArray = {"日常申请", "请假申请", "出差申请", "加班申请", "考勤修正申请"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setItems(typeArray, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    Intent intent = new Intent(getActivity(), AppealDailyActivity.class);
+                    startActivity(intent);
+                } else if (which == 1) {
+                    Intent intent = new Intent(getActivity(), AppealAbsenceActivity.class);
+                    startActivity(intent);
+                } else if (which == 2) {
+                    Intent intent = new Intent(getActivity(), AppealTravelActivity.class);
+                    startActivity(intent);
+                } else if (which == 3) {
+                    Intent intent = new Intent(getActivity(), AppealOvertimeActivity.class);
+                    startActivity(intent);
+                } else if (which == 4) {
+                    Intent intent = new Intent(getActivity(), AppealPunchActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        builder.show();
+    }
     /***********************************************************************************************
      *                                         On Click Events
      * @param view
@@ -263,30 +298,20 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
     public void onClick(View view){
         switch (view.getId()){
             case R.id.go_in_request:
-                Intent intent_in = new Intent(this.getActivity(), SignAppealDailyActivity.class);
-                startActivity(intent_in);
-                break;
             case R.id.go_out_request:
-                Intent intent_out = new Intent(this.getActivity(), SignAppealDailyActivity.class);
-                startActivity(intent_out);
+                request();
                 break;
             case R.id.time_in_out_btn:
                 int status = AppData.getSigninStatus();
                 if(status==0){
                     AppData.setSigninStatus(1);
-                    AppData.setTimeIn(System.currentTimeMillis(), addressInfo);
+                    AppData.setTimeIn(System.currentTimeMillis(), currentLocation);
                 }else if(status==1){
                     AppData.setSigninStatus(2);
-                    AppData.setTimeOut(System.currentTimeMillis(), addressInfo);
+                    AppData.setTimeOut(System.currentTimeMillis(), currentLocation);
                 }
                 sendTimeInOutStatus();
                 drawUI();
-                break;
-            case R.id.location_pin:
-                setPinInfoPanel(!isPinInfoPanelShow());
-                break;
-            case R.id.location_info:
-                pinInfoPanel.setVisibility(View.GONE);
                 break;
         }
     }
@@ -324,194 +349,118 @@ public class SignFragment extends BaseFragment implements LocationSource, View.O
             }
         });
     }
+
+    private void getLocation(){
+        try{
+            Position position = AppData.getCurrentPosition();
+            LatLng latLng = new LatLng(position.latitude, position.longitude);
+            aMap.clear();
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+            aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+            MarkerOptions options =new MarkerOptions().position(latLng).icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            aMap.addMarker(options);
+            AddressHelper.getAddress(getActivity(), position.latitude, position.longitude, new AddressHelper.Callback() {
+                @Override
+                public void onSuccess(String address) {
+                    currentLocation = address;
+                    locationTextView.setText(currentLocation);
+                }
+                @Override
+                public void onFailed() {}
+            });
+        }catch (Exception ex){
+        }
+    }
     /***********************************************************************************************
      *
      *                                          AMAP Functions
      *
      **********************************************************************************************/
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-        locationManager.deactive();
+    private void setUpMap() {
+        aMap.getUiSettings().setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+        aMap.setMyLocationEnabled(false);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
     }
-
+    /**
+     * 方法必须重写
+     */
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
-        locationManager.activate();
+        checkGPS();
+        getLocation();
     }
 
+    /**
+     * 方法必须重写
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        GPSService.onLocationChange = null;
+        mapView.onPause();
+    }
 
+    /**
+     * 方法必须重写
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    /**
+     * 方法必须重写
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        if (locationManager != null) {
-            locationManager.deactive();
-        }
-
-        callback = null;
     }
 
     @Override
     public void onUpdate(int serviceType) {
-
     }
 
-
-    private boolean isPinInfoPanelShow() {
-        return pinInfoPanel.getVisibility() == View.VISIBLE;
-    }
-    private void setPinInfoPanel(boolean show) {
-        if(show && !TextUtils.isEmpty(addressInfo)) {
-            pinInfoPanel.setVisibility(View.VISIBLE);
-            pinInfoTextView.setText(addressInfo);
-        } else {
-            pinInfoPanel.setVisibility(View.GONE);
+    private void checkGPS(){
+        LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if(mLocationManager == null){
+            showSettingsAlert();
+            return;
         }
-    }
-
-    @Override
-    public void onLocationChanged(NimLocation location) {
-        if(location != null && location.hasCoordinates()) {
-            cacheLatitude = location.getLatitude();
-            cacheLongitude = location.getLongitude();
-            cacheAddressInfo = location.getAddrStr();
-
-            if (cacheLatitude == 0 || cacheLongitude == 0)
-            {
-//                initLocation();
-                return;
-            }
-
-            if(locating) {
-                locating = false;
-                locationAddressInfo(cacheLatitude, cacheLongitude, cacheAddressInfo);
-            }
-        }
-    }
-
-    private void locationAddressInfo(double lat, double lng, String address) {
-        LatLng latlng = new LatLng(lat, lng);
-        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, amap.getCameraPosition().zoom, 0, 0));
-        amap.moveCamera(camera);
-        addressInfo = address;
-        latitude = lat;
-        longitude = lng;
-
-        setPinInfoPanel(true);
-    }
-    @Override
-    public void onCameraChange(CameraPosition arg0) {}
-
-    @Override
-    public void onCameraChangeFinish(CameraPosition cameraPosition) {
-        if (!locating) {
-            queryLatLngAddress(cameraPosition.target);
-        } else {
-            latitude = cameraPosition.target.latitude;
-            longitude = cameraPosition.target.longitude;
-        }
-        updateMyLocationStatus(cameraPosition);
-    }
-
-    private void updateMyLocationStatus(CameraPosition cameraPosition) {
-        if(Math.abs(-1 - cacheLatitude) < 0.1f) {
-            // 定位失败
+        // getting GPS status
+        boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // getting network status
+        boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (!isGPSEnabled && !isNetworkEnabled) {
+            showSettingsAlert();
             return;
         }
     }
+    public void showSettingsAlert(){
+        final Context mContext = this.getActivity();
 
-    private void queryLatLngAddress(LatLng latlng) {
-        if(!TextUtils.isEmpty(addressInfo) && latlng.latitude == latitude && latlng.longitude == longitude) {
-            return;
-        }
-
-        Handler handler = new Handler(getMainLooper());
-        handler.removeCallbacks(runable);
-        handler.postDelayed(runable, 5 * 1000);// 20s超时
-        geocoder.queryAddressNow(latlng.latitude, latlng.longitude);
-
-        latitude = latlng.latitude;
-        longitude = latlng.longitude;
-
-        this.addressInfo = null;
-        setPinInfoPanel(false);
-    }
-
-    private void clearTimeoutHandler() {
-        Handler handler = new Handler(getMainLooper());
-        handler.removeCallbacks(runable);
-    }
-
-    private void initAmap() {
-        try {
-            amap = mapView.getMap();
-            amap.setOnCameraChangeListener(this);
-
-            UiSettings uiSettings = amap.getUiSettings();
-            uiSettings.setZoomControlsEnabled(true);
-            // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-            uiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initLocation() {
-        locationManager = new NimLocationManager(getActivity(), this);
-        Location location = locationManager.getLastKnownLocation();
-
-        Intent intent = getActivity().getIntent();
-        float zoomLevel = intent.getIntExtra(LocationExtras.ZOOM_LEVEL, LocationExtras.DEFAULT_ZOOM_LEVEL);
-
-        LatLng latlng = null;
-        if (location == null) {
-
-            latlng = new LatLng(39.90923, 116.397428);
-        } else {
-            latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        }
-        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, zoomLevel, 0, 0));
-        amap.moveCamera(camera);
-        geocoder = new NimGeocoder(getActivity(), geocoderListener);
-    }
-
-    private NimGeocoder.NimGeocoderListener geocoderListener = new NimGeocoder.NimGeocoderListener() {
-        @Override
-        public void onGeoCoderResult(NimLocation location) {
-            if(latitude == location.getLatitude() && longitude == location.getLongitude()) { // 响应的是当前查询经纬度
-                if(location.hasAddress()) {
-//                    addressInfo = location.getFullAddr();
-                } else {
-                    addressInfo = "";
-                }
-                setPinInfoPanel(true);
-                clearTimeoutHandler();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS is settings");
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                mContext.startActivity(intent);
             }
-        }
-    };
-
-
-    private Runnable runable = new Runnable() {
-        @Override
-        public void run() {
-//            addressInfo = getString(R.string.location_address_unkown);
-            setPinInfoPanel(true);
-        }
-    };
-
-    @Override
-    public void activate(OnLocationChangedListener onLocationChangedListener) {
-
-    }
-
-    @Override
-    public void deactivate() {
-
+        });
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        // Showing Alert Message
+        alertDialog.show();
     }
 }

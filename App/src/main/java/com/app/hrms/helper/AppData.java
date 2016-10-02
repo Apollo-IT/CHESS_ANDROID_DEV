@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.app.hrms.utils.db.DBManaber;
 import com.app.hrms.utils.db.DBUtil;
+import com.app.hrms.utils.gps.Position;
 
 import java.sql.Date;
 
@@ -90,7 +91,23 @@ public class AppData {
         editor.commit();
     }
     public static int getGPSInterval(){
-        return shared.getInt("GPSInterval", 60000);
+        return shared.getInt("GPSInterval", 60);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //                                        Position
+    //----------------------------------------------------------------------------------------------
+    public static void setCurrentPosition(Position position){
+        try{
+            DBManaber.getAppDataTable().put("current_position", DBUtil.objectToString(position));
+        }catch (Exception ex){}
+    }
+    public static Position getCurrentPosition(){
+        Position position = (Position) DBUtil.stringToObject(DBManaber.getAppDataTable().get("current_position"));
+        if(position==null){
+            position = new Position(0.0f, 0.0f);
+        }
+        return position;
     }
 
 

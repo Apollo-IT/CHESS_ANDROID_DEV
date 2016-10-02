@@ -21,7 +21,6 @@ public class CustomNotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = context.getPackageName() + NimIntent.ACTION_RECEIVE_CUSTOM_NOTIFICATION;
         if (action.equals(intent.getAction())) {
-
             // 从intent中取出自定义通知
             CustomNotification notification = (CustomNotification) intent.getSerializableExtra(NimIntent.EXTRA_BROADCAST_MSG);
             try {

@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.app.hrms.helper.AppData;
 import com.app.hrms.message.DemoCache;
 import com.app.hrms.message.config.Preferences;
+import com.app.hrms.utils.gps.GPSService;
 import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
@@ -85,7 +87,9 @@ public class SplashActivity extends AppCompatActivity {
     //                                      Start Main Activity
     //----------------------------------------------------------------------------------------------
     private void startMainActivity(){
-
+        //GPSSender.startSender(activity);
+        Intent mIntent = new Intent(this, GPSService.class);
+        startService(mIntent);
         //------------------JUC Add------------------------------
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

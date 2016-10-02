@@ -12,13 +12,22 @@ import com.app.hrms.helper.AppealHelper;
 import com.app.hrms.model.AppCookie;
 import com.app.hrms.model.appeal.Punch;
 import com.app.hrms.ui.common.SelectEmployeeActivity;
+import com.app.hrms.utils.Urls;
 import com.app.hrms.utils.Utils;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.garymansell.SweetAlert.SweetAlertDialog;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.apache.http.Header;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class AppealPunchActivity extends AppCompatActivity implements View.OnClickListener
@@ -98,6 +107,7 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                             public void onDateSet(DatePickerDialog datePickerDialog, int y, int m, int d) {
                                 model.CLODA = y + "-" + (m + 1) + "-" + d;
                                 clodaText.setText(model.CLODA);
+                                getOldClodaInfo(model.CLODA);
                             }
                         },
                         now.get(Calendar.YEAR),
@@ -162,6 +172,47 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                 save();
                 break;
         }
+    }
+    //----------------------------------------------------------------------------------------------
+    //                                        Get Old Cloda Info
+    //----------------------------------------------------------------------------------------------
+    private void getOldClodaInfo(String cloda){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("memberID", AppCookie.getInstance().getCurrentUser().getPernr());
+        params.put("CLODA", cloda);
+
+        final SVProgressHUD hud = new SVProgressHUD(this);
+        hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
+        client.post(this, Urls.BASE_URL + Urls.GET_OLD_CLODA_INFO, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int status, Header[] headers, byte[] bytes) {
+                try {
+                    JSONObject resultJson = new JSONObject(new String(bytes));
+                    System.out.println(resultJson);
+                    int retcode = resultJson.getInt("error_no");
+                    if (retcode == 0) {
+                        model.OLOIN = resultJson.getString("CLOIN");
+                        oloinText.setText(model.OLOIN);
+                        model.OLOOU = resultJson.getString("CLOOU");
+                        oloouText.setText(model.OLOOU);
+                        model.OINAD = resultJson.getString("CINAD");
+                        oinadText.setText(model.OINAD);
+                        model.OOUAD = resultJson.getString("COUAD");
+                        oouadText.setText(model.OOUAD);
+                    }else{
+
+                    }
+                    hud.dismiss();
+                } catch (Exception e) {
+                    hud.dismiss();
+                }
+            }
+            @Override
+            public void onFailure(int status, Header[] headers, byte[] bytes, Throwable throwable) {
+                hud.showErrorWithStatus("Fail");
+            }
+        });
     }
     //----------------------------------------------------------------------------------------------
     //                                        On Result for Select Member

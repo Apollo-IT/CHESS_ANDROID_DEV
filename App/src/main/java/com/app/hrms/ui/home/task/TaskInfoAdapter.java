@@ -47,7 +47,8 @@ public class TaskInfoAdapter extends ArrayAdapter<TaskInfo> {
         }
         parentView.setTag(holder);
         holder.title_text.setText(info.taskDetails);
-        holder.member_text.setText(info.fromName + " ➞ " + info.excuteName);
+//        holder.member_text.setText(info.fromName + " ➞ " + info.excuteName);
+        holder.member_text.setText(info.fromName + " => " + info.excuteName);
         holder.day_text.setText(info.taskStartDate + " ~ " + info.taskRegulationDate);
         return parentView;
     }

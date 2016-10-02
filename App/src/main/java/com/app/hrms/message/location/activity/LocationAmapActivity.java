@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMap.OnCameraChangeListener;
@@ -19,28 +20,30 @@ import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.app.hrms.R;
+import com.app.hrms.helper.AddressHelper;
+import com.app.hrms.helper.AppData;
 import com.app.hrms.message.location.helper.NimGeocoder;
-import com.app.hrms.message.location.helper.NimLocationManager;
-import com.app.hrms.message.location.helper.NimLocationManager.NimLocationListener;
 import com.app.hrms.message.location.model.NimLocation;
+import com.app.hrms.utils.gps.Position;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.netease.nim.uikit.LocationProvider;
 import com.netease.nim.uikit.common.activity.UI;
+import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.model.ToolBarOptions;
 
-public class LocationAmapActivity extends UI implements  OnCameraChangeListener, OnClickListener, NimLocationListener {
+public class LocationAmapActivity extends UI implements  OnCameraChangeListener, OnClickListener{
 
 //	private static final String TAG = "LocationAmapActivity";
 
 	private TextView sendButton;
-	private ImageView pinView;
+//	private ImageView pinView;
 	private View pinInfoPanel;
 	private TextView pinInfoTextView;
-
-	private NimLocationManager locationManager = null;
 
 	private double latitude; // 经度
 	private double longitude; // 维度
@@ -77,21 +80,19 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 		initView();
 		initAmap();
 		initLocation();
-		updateSendStatus();
 	}
 
 	private void initView() {
 		sendButton = findView(R.id.action_bar_right_clickable_textview);
 		sendButton.setText(R.string.send);
 		sendButton.setOnClickListener(this);
-		sendButton.setVisibility(View.INVISIBLE);
 
-		pinView = (ImageView) findViewById(R.id.location_pin);
-		pinInfoPanel = findViewById(R.id.location_info);
-		pinInfoTextView = (TextView) pinInfoPanel.findViewById(R.id.marker_address);
-
-		pinView.setOnClickListener(this);
-		pinInfoPanel.setOnClickListener(this);
+//		pinView = (ImageView) findViewById(R.id.location_pin);
+//		pinInfoPanel = findViewById(R.id.location_info);
+//		pinInfoTextView = (TextView) pinInfoPanel.findViewById(R.id.marker_address);
+//
+//		pinView.setOnClickListener(this);
+//		pinInfoPanel.setOnClickListener(this);
 
 
 		btnMyLocation = (Button) findViewById(R.id.my_location);
@@ -116,41 +117,30 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 	}
 
 	private void initLocation() {
-		locationManager = new NimLocationManager(this, this);
-		Location location = locationManager.getLastKnownLocation();
+		Position position = AppData.getCurrentPosition();
+		cacheLatitude = position.latitude;
+		cacheLongitude = position.longitude;
+		AddressHelper.getAddress(this, cacheLatitude, cacheLongitude, new AddressHelper.Callback() {
+			@Override
+			public void onSuccess(String address) {
+				cacheAddressInfo = address;
+			}
+			@Override
+			public void onFailed() {}
+		});
+		LatLng latlng = new LatLng(cacheLatitude, cacheLongitude);
 
 		Intent intent = getIntent();
 		float zoomLevel = intent.getIntExtra(LocationExtras.ZOOM_LEVEL, LocationExtras.DEFAULT_ZOOM_LEVEL);
 
-		LatLng latlng = null;
-		if (location == null) {
-			latlng = new LatLng(39.90923, 116.397428);
-		} else {
-			latlng = new LatLng(location.getLatitude(), location.getLongitude());
-		}
 		CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, zoomLevel, 0, 0));
+		amap.clear();
 		amap.moveCamera(camera);
+		MarkerOptions options =new MarkerOptions().position(latlng).icon(
+				BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+		amap.addMarker(options);
 		geocoder = new NimGeocoder(this, geocoderListener);
 	}
-
-	private void updateSendStatus() {
-		if(isFinishing()) {
-			return;
-		}
-		int titleResID = R.string.location_map;
-		if(TextUtils.isEmpty(addressInfo)) {
-			titleResID = R.string.location_loading;
-			sendButton.setVisibility(View.GONE);
-		} else {
-			sendButton.setVisibility(View.VISIBLE);
-		}
-		if(btnMyLocation.getVisibility() == View.VISIBLE || Math.abs(-1 - cacheLatitude) < 0.1f) {
-			setTitle(titleResID);
-		} else {
-			setTitle(R.string.my_location);
-		}
-	}
-
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -161,14 +151,12 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 	protected void onPause() {
 		super.onPause();
 		mapView.onPause();
-		locationManager.deactive();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mapView.onResume();
-		locationManager.activate();
 	}
 
 
@@ -176,10 +164,6 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 	protected void onDestroy() {
 		super.onDestroy();
 		mapView.onDestroy();
-		if (locationManager != null) {
-			locationManager.deactive();
-		}
-
 		callback = null;
 	}
 
@@ -193,17 +177,33 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 	}
 
 	private void sendLocation() {
-		Intent intent = new Intent();
-		intent.putExtra(LocationExtras.LATITUDE, latitude);
-		intent.putExtra(LocationExtras.LONGITUDE, longitude);
-		addressInfo = TextUtils.isEmpty(addressInfo) ? getString(R.string.location_address_unkown) : addressInfo;
-		intent.putExtra(LocationExtras.ADDRESS, addressInfo);
-		intent.putExtra(LocationExtras.ZOOM_LEVEL, amap.getCameraPosition().zoom);
-		intent.putExtra(LocationExtras.IMG_URL, getStaticMapUrl());
+		Position position = AppData.getCurrentPosition();
+		cacheLatitude = position.latitude;
+		cacheLongitude = position.longitude;
+		AddressHelper.getAddress(this, cacheLatitude, cacheLongitude, new AddressHelper.Callback() {
+			@Override
+			public void onSuccess(String address) {
+				cacheAddressInfo = address;
 
-		if (callback != null) {
-			callback.onSuccess(longitude, latitude, addressInfo);
-		}
+				Intent intent = new Intent();
+				intent.putExtra(LocationExtras.LATITUDE, cacheLatitude);
+				intent.putExtra(LocationExtras.LONGITUDE, cacheLongitude);
+				addressInfo = cacheAddressInfo;
+				intent.putExtra(LocationExtras.ADDRESS, addressInfo);
+				intent.putExtra(LocationExtras.ZOOM_LEVEL, amap.getCameraPosition().zoom);
+				intent.putExtra(LocationExtras.IMG_URL, getStaticMapUrl());
+
+				if (callback != null) {
+					callback.onSuccess(longitude, latitude, addressInfo);
+				}
+				finish();
+			}
+			@Override
+			public void onFailed() {
+                Toast.makeText(LocationAmapActivity.this, getString(R.string.location_address_unkown), Toast.LENGTH_SHORT).show();
+			}
+		});
+
 	}
 
 	@Override
@@ -211,7 +211,6 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 		switch(v.getId()) {
 			case R.id.action_bar_right_clickable_textview:
 				sendLocation();
-				finish();
 				break;
 			case R.id.location_pin:
 				setPinInfoPanel(!isPinInfoPanelShow());
@@ -246,27 +245,6 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 		} else {
 			pinInfoPanel.setVisibility(View.GONE);
 		}
-		updateSendStatus();
-	}
-
-	@Override
-	public void onLocationChanged(NimLocation location) {
-		if(location != null && location.hasCoordinates()) {
-			cacheLatitude = location.getLatitude();
-			cacheLongitude = location.getLongitude();
-			cacheAddressInfo = location.getAddrStr();
-
-			if (cacheLatitude == 0 || cacheLongitude == 0)
-			{
-//                initLocation();
-				return;
-			}
-
-			if(locating) {
-				locating = false;
-				locationAddressInfo(cacheLatitude, cacheLongitude, cacheAddressInfo);
-			}
-		}
 	}
 
 	@Override
@@ -280,20 +258,6 @@ public class LocationAmapActivity extends UI implements  OnCameraChangeListener,
 			latitude = cameraPosition.target.latitude;
 			longitude = cameraPosition.target.longitude;
 		}
-		updateMyLocationStatus(cameraPosition);
-	}
-
-	private void updateMyLocationStatus(CameraPosition cameraPosition) {
-		if(Math.abs(-1 - cacheLatitude) < 0.1f) {
-			// 定位失败
-			return;
-		}
-		LatLng source = new LatLng(cacheLatitude, cacheLongitude);
-		LatLng target = cameraPosition.target;
-		float distance = AMapUtils.calculateLineDistance(source, target);
-		boolean showMyLocation = distance > 50;
-		btnMyLocation.setVisibility(showMyLocation ? View.VISIBLE:View.GONE);
-		updateSendStatus();
 	}
 
 	private void queryLatLngAddress(LatLng latlng) {

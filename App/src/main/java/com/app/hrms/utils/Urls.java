@@ -74,7 +74,8 @@ public class Urls {
     public static final String WORKFLOW_DETAILS_03  = "/sys/workflow/mobile/travelDetailsApproval.do";
     public static final String WORKFLOW_DETAILS_04  = "/sys/workflow/mobile/overtimeDetailsApproval.do";
     public static final String WORKFLOW_DETAILS_05  = "/sys/workflow/mobile/punchDetailsApproval.do";
-
+    //http://localhost:8080/sys/workflow/mobile/getOldClodaInfo.do?CLODA=2016-07-01&memberID=00014058
+    public static final String GET_OLD_CLODA_INFO   = "/sys/workflow/mobile/getOldClodaInfo.do";
 
     public static final String TASK_LIST            = "/sys/workflow/mobile/taskList.do";
     public static final String NEW_TASK             = "/sys/workflow/mobile/newTask.do";
@@ -92,6 +93,7 @@ public class Urls {
     public static final String API_SALARY_WEBVIEW    = "/sys/hrmanage/manager/mobile/webview/salary.do?memberID=";
     public static final String API_ASSESS_WEBVIEW    = "/sys/hrmanage/manager/mobile/webview/assess.do?memberID=";
     public static final String API_TASK_WEBVIEW      = "/sys/hrmanage/manager/mobile/subordinates/taskWebView.do?memberID=";
+    public static final String API_TRAINING_WEBVIEW  = "/sys/hrmanage/manager/mobile/webview/training.do";
 
     public static final String API_SUBORDINATES_LIST = "/sys/hrmanage/manager/mobile/subordinates/list.do";
     public static final String API_ACADEMIC_CHART    = "/sys/hrmanage/manager/mobile/subordinates/academicChart.do";
