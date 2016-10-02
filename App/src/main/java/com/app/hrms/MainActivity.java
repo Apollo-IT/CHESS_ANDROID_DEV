@@ -411,6 +411,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         public void onEvent(SystemMessage systemMessage) {
             onSystemNotificationDeal(systemMessage, true);
         }
+
     };
 
     private void onSystemNotificationDeal(final SystemMessage message, final boolean pass) {
