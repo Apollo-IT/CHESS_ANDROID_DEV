@@ -11,7 +11,7 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:orientation="horizontal"
-		android:layout_alignParentBottom="true"
+		android:layout_centerVertical="true"
 		android:padding="10dp">
 
 		<com.app.hrms.widget.ClickEffectImageView
@@ -31,7 +31,7 @@
         android:id="@+id/title_text"
 		android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+		android:layout_centerVertical="true"
        	android:layout_marginBottom="7dp"
         android:gravity="center" 
         android:textSize="19sp"
@@ -42,7 +42,7 @@
      	android:id="@+id/imgMenuBtn"
        	android:layout_width="wrap_content"
        	android:layout_height="wrap_content"
-       	android:layout_alignParentBottom="true"
+		android:layout_centerVertical="true"
        	android:layout_alignParentRight="true"
        	android:layout_marginRight="10dp"
        	android:layout_marginBottom="12dp"

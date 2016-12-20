@@ -260,7 +260,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="试用期截止日期:"/>
+                android:text="合同结束日期:"/>
             <TextView
                 android:id="@+id/txtCtedt"
                 android:layout_width="wrap_content"

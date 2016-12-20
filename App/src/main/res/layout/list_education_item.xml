@@ -32,7 +32,7 @@
                 android:id="@+id/txtEtype_t"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:text=""/>
@@ -75,7 +75,7 @@
                     android:id="@+id/txtEtype"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -96,7 +96,7 @@
                     android:id="@+id/txtAcdeg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -126,7 +126,7 @@
                     android:id="@+id/txtBegda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -146,7 +146,7 @@
                     android:id="@+id/txtEndda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -175,7 +175,7 @@
                     android:id="@+id/txtSpec1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -201,7 +201,7 @@
                     android:id="@+id/txtSpec2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -227,7 +227,7 @@
                     android:id="@+id/txtActur"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -255,7 +255,7 @@
                     android:id="@+id/txtDacde"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -281,7 +281,7 @@
                     android:id="@+id/txtHetyp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -308,7 +308,7 @@
                     android:id="@+id/txtHacde"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>
@@ -335,7 +335,7 @@
                     android:id="@+id/txtInsti"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:text=""/>

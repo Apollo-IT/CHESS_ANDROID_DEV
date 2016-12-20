@@ -58,6 +58,7 @@ public class TrainingHelper {
                             course.setTrype(courseJson.getString("trype"));
                             course.setTrrst(courseJson.getString("trrst"));
                             course.setCouna(courseJson.getString("couna"));
+                            course.setId(courseJson.getString("id"));
                             long time = Date.valueOf(course.getBegda()).getTime();
                             if(time>=beTime && time<=enTime){
                                 courseList.add(course);
@@ -129,13 +130,14 @@ public class TrainingHelper {
         });
     }
 
-    public void getCourseList(Context context, String memberID, String begda, String endda, final CourseListCallback callback) {
+    public void getCourseList(final Context context, String memberID, String begda, String endda, final CourseListCallback callback) {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("PERNR", memberID);
         params.put("BEGDA", begda);
         params.put("ENDDA", endda);
+        params.put("COOBJID", AppCookie.getInstance().getCurrentUser().getCobjid());
 
         client.post(context, Urls.BASE_URL + Urls.COURSE_LIST_INFO, params, new AsyncHttpResponseHandler() {
 
@@ -159,6 +161,7 @@ public class TrainingHelper {
                             course.setCouno(courseJson.getString("COUNO"));
                             course.setCoute(courseJson.getString("COUTE"));
                             course.setCoust(courseJson.getString("COUST"));
+                            course.setId(courseJson.getString("id"));
                             courseList.add(course);
                         }
 

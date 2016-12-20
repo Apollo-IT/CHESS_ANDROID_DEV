@@ -547,6 +547,7 @@ public class ResumeHelper {
                         }
 
                         MemberModel member = new MemberModel();
+                        member.setConame(resultJson.getString("coname"));
                         JSONObject pa1001 = resultJson.getJSONObject("pa1001");
                         member.setPernr(pa1001.getString("pernr"));
                         member.setPlans(pa1001.getString("plans"));

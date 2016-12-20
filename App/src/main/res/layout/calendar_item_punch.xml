@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvtext"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:gravity="center" />
+    <LinearLayout
+        android:layout_width="14dp"
+        android:layout_height="7dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+
+        <com.app.hrms.widget.RoundedImageView
+            android:id="@+id/redMark1"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_gravity="center"/>
+
+        <com.app.hrms.widget.RoundedImageView
+            android:id="@+id/redMark2"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_marginLeft="0.5dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>

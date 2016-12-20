@@ -52,7 +52,7 @@ public class AppealOvertimeActivity extends AppCompatActivity implements View.On
     //----------------------------------------------------------------------------------------------
     private void initUI(){
         titleText = (TextView)findViewById(R.id.txtTitle);
-        titleText.setText("请假申请");
+        titleText.setText("加班申请");
         findViewById(R.id.btnBack).setOnClickListener(this);
 
         nameText = (EditText)findViewById(R.id.name_txt);
@@ -65,9 +65,6 @@ public class AppealOvertimeActivity extends AppCompatActivity implements View.On
         approverText = (TextView)findViewById(R.id.approver_txt);
         postButton = (TextView)findViewById(R.id.post_btn);
 
-        typeText.setOnClickListener(this);
-        begdatext.setOnClickListener(this);
-        enddaText.setOnClickListener(this);
         approverText.setOnClickListener(this);
         postButton.setOnClickListener(this);
     }
@@ -82,7 +79,7 @@ public class AppealOvertimeActivity extends AppCompatActivity implements View.On
                 Utils.hideKeyboard(this);
                 finish();
                 break;
-            case R.id.type_txt:
+            case R.id.type_txt_btn:
                 final String[] typeArray = {"休息日加班","节假日加班","夜晚加班","延时加班"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setItems(typeArray, new DialogInterface.OnClickListener() {
@@ -98,7 +95,7 @@ public class AppealOvertimeActivity extends AppCompatActivity implements View.On
                 });
                 builder.show();
                 break;
-            case R.id.begda_txt:
+            case R.id.begda_txt_btn:
                 DatePickerDialog dpd1 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -113,7 +110,7 @@ public class AppealOvertimeActivity extends AppCompatActivity implements View.On
                 );
                 dpd1.show(getFragmentManager(), "Datepickerdialog");
                 break;
-            case R.id.endda_txt:
+            case R.id.endda_txt_btn:
                 DatePickerDialog dpd2 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override

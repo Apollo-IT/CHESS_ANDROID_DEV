@@ -33,7 +33,12 @@ public class ResumeActivity extends UserSetBaseActivity implements View.OnClickL
         txtPosition = (TextView)findViewById(R.id.txtPosition);
 
         TextView txtTitle = (TextView)findViewById(R.id.txtTitle);
-        txtTitle.setText(R.string.resume);
+        if(isMyAccount()){
+            txtTitle.setText(R.string.resume);
+        }else{
+            txtTitle.setText("下属简历");
+        }
+
 
         findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
             @Override

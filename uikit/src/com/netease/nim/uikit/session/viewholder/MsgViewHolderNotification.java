@@ -2,6 +2,7 @@ package com.netease.nim.uikit.session.viewholder;
 
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
+import android.view.View;
 import android.widget.TextView;
 
 import com.netease.nim.uikit.R;
@@ -34,6 +35,10 @@ public class MsgViewHolderNotification extends MsgViewHolderBase {
     private void handleTextNotification(String text) {
         MoonUtil.identifyFaceExpressionAndATags(context, notificationTextView, text, ImageSpan.ALIGN_BOTTOM);
         notificationTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (text.equals(""))
+        {
+            notificationTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override

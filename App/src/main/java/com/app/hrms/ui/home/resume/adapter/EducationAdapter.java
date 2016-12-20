@@ -84,28 +84,28 @@ public class EducationAdapter extends ArrayAdapter<EducationInfo>  {
 		holder.txtSpec1.setText(education.getSpec1());
 		holder.txtSpec2.setText(education.getSpec2());
 		for (ParamModel param: paramMap.get("par029")) {
-			if (param.getParamValue().equals(education.getEtype())) {
+			if (param.getParamValue().equals(education.getActur())) {
 				holder.txtActur.setText(param.getParamName());
 				break;
 			}
 		}
 
 		for (ParamModel param: paramMap.get("par009")) {
-			if (param.getParamValue().equals(education.getEtype())) {
+			if (param.getParamValue().equals(education.getDacde())) {
 				holder.txtDacde.setText(param.getParamName());
 				break;
 			}
 		}
 
 		for (ParamModel param: paramMap.get("par007")) {
-			if (param.getParamValue().equals(education.getEtype())) {
+			if (param.getParamValue().equals(education.getHetyp())) {
 				holder.txtHetyp.setText(param.getParamName());
 				break;
 			}
 		}
 
 		for (ParamModel param: paramMap.get("par008")) {
-			if (param.getParamValue().equals(education.getEtype())) {
+			if (param.getParamValue().equals(education.getHacde())) {
 				holder.txtHacde.setText(param.getParamName());
 				break;
 			}

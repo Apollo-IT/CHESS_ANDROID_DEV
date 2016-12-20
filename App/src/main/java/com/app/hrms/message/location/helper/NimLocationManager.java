@@ -18,8 +18,6 @@ import android.text.TextUtils;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.LocationManagerProxy;
-import com.amap.api.location.LocationProviderProxy;
 import com.app.hrms.message.location.model.NimLocation;
 import com.app.hrms.message.common.infra.TaskExecutor;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -38,7 +36,6 @@ public class NimLocationManager implements AMapLocationListener {
     Criteria criteria; // onResume 重新激活 if mProvider == null
 
     /** AMap location */
-    private LocationManagerProxy aMapLocationManager;
 
     /** google api */
 //    private LocationManager mSysLocationMgr = null;
@@ -82,47 +79,8 @@ public class NimLocationManager implements AMapLocationListener {
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
     public interface NimLocationListener {
         public void onLocationChanged(NimLocation location);
-    }
-
-    public Location getLastKnownLocation() {
-        try {
-            if(criteria == null) {
-                criteria = new Criteria();
-                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-                criteria.setAltitudeRequired(false);
-                criteria.setBearingRequired(false);
-                criteria.setCostAllowed(false);
-            }
-            if(mProvider == null) {
-                mProvider = aMapLocationManager.getBestProvider(criteria, true);
-            }
-            return aMapLocationManager.getLastKnownLocation(mProvider);
-        } catch (Exception e) {
-            LogUtil.i(TAG, "get lastknown location failed: " + e.toString());
-        }
-        return null;
     }
 
     private void onLocation(NimLocation location, int what) {
@@ -234,11 +192,11 @@ public class NimLocationManager implements AMapLocationListener {
     }
 
     private void stopAMapLocation() {
-        if (aMapLocationManager != null) {
-            aMapLocationManager.removeUpdates(this);
-            aMapLocationManager.destory();
-        }
-        aMapLocationManager = null;
+//        if (aMapLocationManager != null) {
+//            aMapLocationManager.removeUpdates(this);
+//            aMapLocationManager.destory();
+//        }
+//        aMapLocationManager = null;
     }
 
     public void activate() {
@@ -246,11 +204,11 @@ public class NimLocationManager implements AMapLocationListener {
     }
 
     private void requestAmapLocation() {
-        if (aMapLocationManager == null) {
-            aMapLocationManager = LocationManagerProxy.getInstance(mContext);
-            aMapLocationManager.setGpsEnable(true);
-            aMapLocationManager.requestLocationData(
-                    LocationProviderProxy.AMapNetwork, 30 * 1000, 10, this);
-        }
+//        if (aMapLocationManager == null) {
+//            aMapLocationManager = LocationManagerProxy.getInstance(mContext);
+//            aMapLocationManager.setGpsEnable(true);
+//            aMapLocationManager.requestLocationData(
+//                    LocationProviderProxy.AMapNetwork, 30 * 1000, 10, this);
+//        }
     }
 }

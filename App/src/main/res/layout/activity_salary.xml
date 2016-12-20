@@ -67,7 +67,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:text="实发工资(元)"/>
 
             <TextView
@@ -112,7 +112,7 @@
                         android:layout_toRightOf="@+id/flower1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:text="应发工资"/>
                     <TextView
                         android:id="@+id/txtSalary2"
@@ -148,7 +148,7 @@
                         android:layout_toRightOf="@+id/flower2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:text="社会保险"/>
                     <TextView
                         android:id="@+id/txtSalary3"
@@ -190,7 +190,7 @@
                         android:layout_toRightOf="@+id/flower3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:text="个人所得税"/>
                     <TextView
                         android:id="@+id/txtSalary4"
@@ -226,7 +226,7 @@
                         android:layout_toRightOf="@+id/flower4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:text="其他扣除"/>
                     <TextView
                         android:id="@+id/txtSalary5"

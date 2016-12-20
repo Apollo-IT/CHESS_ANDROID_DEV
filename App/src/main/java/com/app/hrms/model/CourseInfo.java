@@ -19,6 +19,7 @@ public class CourseInfo implements Serializable {
     private String couna            = "";
     private String coust            = "";
     private String couno            = "";
+    private String id               = "";
 
     public SubordinateInfo subordinateInfo = new SubordinateInfo();
 
@@ -27,6 +28,13 @@ public class CourseInfo implements Serializable {
     }
     public int getRowId() {
         return rowId;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getId() {
+        return id;
     }
 
     public void setPernr(String pernr) {

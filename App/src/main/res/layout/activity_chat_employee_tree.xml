@@ -9,7 +9,7 @@
     <include
         android:id="@+id/top_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         layout="@layout/title_bar_message1" />
 
     <LinearLayout

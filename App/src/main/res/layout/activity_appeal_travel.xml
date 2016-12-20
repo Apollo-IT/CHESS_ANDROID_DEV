@@ -40,8 +40,7 @@
                     android:id="@+id/name_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:textSize="18sp"
                     android:padding="10dp"
                     android:background="@color/white"/>
@@ -56,6 +55,8 @@
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/begda_txt_btn"
+                    android:onClick="onClick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -94,6 +95,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/endda_txt_btn"
+                    android:onClick="onClick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

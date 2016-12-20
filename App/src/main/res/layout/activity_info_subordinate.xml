@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:padding="10dp">
             <com.app.hrms.widget.ClickEffectImageView
                 android:layout_width="17dp"
@@ -60,7 +60,7 @@
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_200dp"/>
+        android:layout_height="@dimen/margin_250dp"/>
     <LinearLayout
         android:id="@+id/chat_descript_list"
         android:layout_width="match_parent"

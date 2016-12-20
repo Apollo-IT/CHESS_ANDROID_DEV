@@ -105,7 +105,7 @@ public class ApplicationActivity extends AppCompatActivity implements View.OnCli
         filterList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FilterItem item = (FilterItem) filterList1.getAdapter().getItem(position);
+                FilterItem item = (FilterItem) filterList2.getAdapter().getItem(position);
                 statusText.setText(item.title);
                 filterList2.setVisibility(View.GONE);
                 curStatus2 = position;
@@ -121,17 +121,20 @@ public class ApplicationActivity extends AppCompatActivity implements View.OnCli
                 Intent intent =  new Intent(ApplicationActivity.this, AppealDetailActivity.class);
                 intent.putExtra("workflow", workFlow);
                 intent.putExtra("tab", currentTab);
+                intent.putExtra("status1", curStatus1);
+                intent.putExtra("status2", curStatus2);
                 startActivity(intent);
             }
         });
 
         currentTab = 1;
-        curStatus1 = 0;
+        curStatus1 = 1;
         curStatus2 = 0;
-
+    }
+    public void onResume(){
+        super.onResume();
         updateUI();
         searchFlowList();
-
     }
     private void updateUI(){
         tab1.setBackgroundColor(Color.WHITE);

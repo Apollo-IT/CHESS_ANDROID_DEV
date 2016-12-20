@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/margin_36dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
         <ImageView
             android:id="@+id/btnLeft"
@@ -38,7 +39,8 @@
         android:gravity="center"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:text="新建申请" />
+        android:text="新建申请"
+        android:layout_alignTop="@+id/linearLayout" />
 
     <LinearLayout
         android:layout_width="wrap_content"

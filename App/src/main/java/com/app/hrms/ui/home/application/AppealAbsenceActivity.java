@@ -66,9 +66,6 @@ public class AppealAbsenceActivity extends AppCompatActivity implements View.OnC
         approverText = (TextView)findViewById(R.id.approver_txt);
         postButton = (TextView)findViewById(R.id.post_btn);
 
-        typeText.setOnClickListener(this);
-        begdatext.setOnClickListener(this);
-        enddaText.setOnClickListener(this);
         approverText.setOnClickListener(this);
         postButton.setOnClickListener(this);
     }
@@ -83,7 +80,7 @@ public class AppealAbsenceActivity extends AppCompatActivity implements View.OnC
                 Utils.hideKeyboard(AppealAbsenceActivity.this);
                 finish();
                 break;
-            case R.id.type_txt:
+            case R.id.type_txt_btn:
                 final String[] typeArray = {"事假","婚假","产假","陪护假","年休假","工伤假","病假","探亲假","丧假","哺乳假","计划生育假","旷工","其他"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setItems(typeArray, new DialogInterface.OnClickListener() {
@@ -99,7 +96,7 @@ public class AppealAbsenceActivity extends AppCompatActivity implements View.OnC
                 });
                 builder.show();
                 break;
-            case R.id.begda_txt:
+            case R.id.begda_txt_btn:
                 DatePickerDialog dpd1 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -114,7 +111,7 @@ public class AppealAbsenceActivity extends AppCompatActivity implements View.OnC
                 );
                 dpd1.show(getFragmentManager(), "Datepickerdialog");
                 break;
-            case R.id.endda_txt:
+            case R.id.endda_txt_btn:
                 DatePickerDialog dpd2 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -204,7 +201,7 @@ public class AppealAbsenceActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void onFailed(int error) {
-                hud.showErrorWithStatus("Failed!");
+                hud.showErrorWithStatus("请输入正确的天数或时数");
             }
         });
     }

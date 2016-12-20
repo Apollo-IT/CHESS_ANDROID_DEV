@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.app.hrms.helper.AppData;
+import com.app.hrms.helper.ContactHelper;
+import com.app.hrms.helper.TrainingHelper;
 import com.app.hrms.message.DemoCache;
 import com.app.hrms.message.config.Preferences;
+import com.app.hrms.model.ContactInfo;
 import com.app.hrms.utils.gps.GPSService;
 import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -63,7 +66,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         return null;
     }
-
     //----------------------------------------------------------------------------------------------
     //                                         WaitProcess
     //----------------------------------------------------------------------------------------------
@@ -154,11 +156,6 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
 
-//            if (!firstEnter && intent == null) {
-//                finish();
-//            } else {
-//                startMainActivity();
-//            }
         }
     }
 }

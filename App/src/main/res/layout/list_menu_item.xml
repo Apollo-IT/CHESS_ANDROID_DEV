@@ -8,12 +8,27 @@
     android:orientation="vertical"
     android:background="#E7E8E9">
 
-    <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/empty_image"/>
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/empty_image"/>
+
+        <com.jauker.widget.BadgeView
+            android:id="@+id/badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="#ee1d23"/>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/txtMenuName"
@@ -24,4 +39,6 @@
         android:textStyle="bold"
         android:gravity="center"
         android:text="TEXT"/>
+
+
 </LinearLayout>

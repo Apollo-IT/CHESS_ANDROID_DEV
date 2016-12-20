@@ -4,6 +4,8 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="19" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.app.hrms.permission.RECEIVE_MSG" />
 
     <application>
         <!-- 会话窗口 -->

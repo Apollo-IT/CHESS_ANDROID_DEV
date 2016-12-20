@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:textSize="18sp"
                 android:text="@string/user_id"/>
 
@@ -37,7 +37,7 @@
                 android:id="@+id/editUsrId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:lines="1"
                 android:textSize="18sp"
                 android:padding="10dp"
@@ -57,7 +57,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:textSize="18sp"
                 android:text="@string/password"/>
 
@@ -65,7 +65,7 @@
                 android:id="@+id/editPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="18sp"
                 android:password="true"
                 android:padding="10dp"
@@ -73,14 +73,6 @@
                 android:labelFor="@string/password"
                 android:background="@color/white" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:layout_gravity="end"
-            android:text="@string/forgot_password"/>
 
         <TextView
             android:id="@+id/btnLogin"

@@ -40,6 +40,7 @@ public class AuthHelper {
                         MemberModel member = new MemberModel();
                         member.setPernr(resultJson.getString("pernr"));
                         member.setCobjid(resultJson.getString("coobjid"));
+                        member.setConame(resultJson.getString("coname"));
                         member.setNachn(resultJson.getString("nachn"));
                         member.setEmail(resultJson.getString("email"));
                         member.setOrgehname(resultJson.getString("orgehname"));

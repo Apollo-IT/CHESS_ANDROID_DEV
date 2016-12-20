@@ -81,11 +81,6 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
         approverText = (TextView)findViewById(R.id.approver_txt);
         postButton = (TextView)findViewById(R.id.post_btn);
 
-        clodaText.setOnClickListener(this);
-        oloinText.setOnClickListener(this);
-        mloinText.setOnClickListener(this);
-        oloouText.setOnClickListener(this);
-        mloouText.setOnClickListener(this);
         approverText.setOnClickListener(this);
         postButton.setOnClickListener(this);
     }
@@ -100,12 +95,12 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                 Utils.hideKeyboard(this);
                 finish();
                 break;
-            case R.id.cloda_txt:
+            case R.id.cloda_txt_btn:
                 DatePickerDialog dpd1 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePickerDialog datePickerDialog, int y, int m, int d) {
-                                model.CLODA = y + "-" + (m + 1) + "-" + d;
+                                model.CLODA =String.format("%02d-%02d-%02d", y, (m+1), d);
                                 clodaText.setText(model.CLODA);
                                 getOldClodaInfo(model.CLODA);
                             }
@@ -116,11 +111,11 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                 );
                 dpd1.show(getFragmentManager(), "Datepickerdialog");
                 break;
-            case R.id.oloin_txt:
+            case R.id.oloin_txt_btn:
                 TimePickerDialog tpd1 = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-                        model.OLOIN = hourOfDay + ":" + minute;
+                        model.OLOIN = String.format("%02d:%02d", hourOfDay, minute);
                         oloinText.setText(model.OLOIN);
                     }
                 }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
@@ -128,11 +123,11 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                 tpd1.setCancelText("取消");
                 tpd1.show(getFragmentManager(), "TimepickerDialog");
                 break;
-            case R.id.mloin_txt:
+            case R.id.mloin_txt_btn:
                 TimePickerDialog tpd2 = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-                        model.MLOIN = hourOfDay + ":" + minute;
+                        model.MLOIN = String.format("%02d:%02d", hourOfDay, minute);
                         mloinText.setText(model.MLOIN);
                     }
                 }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
@@ -140,11 +135,11 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                 tpd2.setCancelText("取消");
                 tpd2.show(getFragmentManager(), "TimepickerDialog");
                 break;
-            case R.id.oloou_txt:
+            case R.id.oloou_txt_btn:
                 TimePickerDialog tpd3 = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-                        model.OLOOU = hourOfDay + ":" + minute;
+                        model.OLOOU = String.format("%02d:%02d", hourOfDay, minute);
                         oloouText.setText(model.OLOOU);
                     }
                 }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);
@@ -152,11 +147,11 @@ public class AppealPunchActivity extends AppCompatActivity implements View.OnCli
                 tpd3.setCancelText("取消");
                 tpd3.show(getFragmentManager(), "TimepickerDialog");
                 break;
-            case R.id.mloou_txt:
+            case R.id.mloou_txt_btn:
                 TimePickerDialog tpd4 = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-                        model.MLOOU = hourOfDay + ":" + minute;
+                        model.MLOOU = String.format("%02d:%02d", hourOfDay, minute);
                         mloouText.setText(model.MLOOU);
                     }
                 }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false);

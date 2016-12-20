@@ -25,6 +25,8 @@ import java.util.Map;
  */
 public class TeamNotificationHelper {
     private static ThreadLocal<String> teamId = new ThreadLocal<>();
+    private static String msg_text = "";
+    private static String team_id = "";
 
     public static String getMsgShowText(final IMMessage message) {
         String content = "";
@@ -47,8 +49,20 @@ public class TeamNotificationHelper {
     }
 
     public static String getTeamNotificationText(String tid, String fromAccount, NotificationAttachment attachment) {
+        if (!team_id.equals(tid))
+        {
+            msg_text = "";
+            team_id = tid;
+        }
         teamId.set(tid);
         String text = buildNotification(tid, fromAccount, attachment);
+        if (msg_text.equals(text))
+        {
+            text = "";
+        }else
+        {
+            msg_text = text;
+        }
         teamId.set(null);
         return text;
     }

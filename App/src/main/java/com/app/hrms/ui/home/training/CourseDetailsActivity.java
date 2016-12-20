@@ -29,6 +29,9 @@ public class CourseDetailsActivity extends AppCompatActivity implements View.OnC
     private TextView txtEndda;
     private TextView statusText;
 
+    private TextView signUpBtn;
+    private TextView cancelBtn;
+
     private CourseInfo course;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,12 @@ public class CourseDetailsActivity extends AppCompatActivity implements View.OnC
         txtBegda = (TextView)findViewById(R.id.txtBegda);
         txtEndda = (TextView)findViewById(R.id.txtEndda);
         statusText = (TextView)findViewById(R.id.status_text);
+        signUpBtn = (TextView)findViewById(R.id.signup_btn);
+        cancelBtn = (TextView)findViewById(R.id.cancel_btn);
 
-        statusText.setOnClickListener(this);
+        signUpBtn.setOnClickListener(this);
+        cancelBtn.setOnClickListener(this);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             course = (CourseInfo)bundle.getSerializable("course");
@@ -86,27 +93,15 @@ public class CourseDetailsActivity extends AppCompatActivity implements View.OnC
                 Utils.hideKeyboard(this);
                 finish();
                 break;
-            case R.id.status_text:
-                new AlertDialog.Builder(this)
-                    .setMessage("请选择")
-                    .setPositiveButton("已报名", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            course.setCoust("02");
-                            statusText.setText("已报名");
-                            updateCourse();
-
-                        }
-                    })
-                    .setNegativeButton("已取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            course.setCoust("03");
-                            statusText.setText("已取消");
-                            updateCourse();
-                        }
-                    })
-                    .show();
+            case R.id.signup_btn:
+                course.setCoust("02");
+                statusText.setText("已报名");
+                updateCourse();
+                break;
+            case R.id.cancel_btn:
+                course.setCoust("03");
+                statusText.setText("已取消");
+                updateCourse();
                 break;
         }
     }

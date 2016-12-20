@@ -145,8 +145,9 @@ public class ChatEmployeeTreeActivity extends AppCompatActivity implements TreeN
             params.put("SOBID", objid);
         }
         params.put("OTYPE", otype);
+        params.put("COOBJID", AppCookie.getInstance().getCurrentUser().getCobjid());
 
-        String url = "/sys/organize/mobile/listOrgUnitTreeJsonData.do" ;
+        String url = Urls.API_ORG_UNIT_TREE;
         client.post(this, Urls.BASE_URL + url, params, new AsyncHttpResponseHandler() {
             final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 

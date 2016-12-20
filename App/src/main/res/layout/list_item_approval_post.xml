@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_10dp"
+        android:text="审批步骤"
+        android:background="#6CACDE"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10dp"
+        android:layout_marginRight="@dimen/margin_10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/check_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/check_1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="#555"
+                android:text="通过"/>
+            <CheckBox
+                android:id="@+id/check_2"
+                android:layout_width="100dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="#555"
+                android:text="拒绝"/>
+            <CheckBox
+                android:id="@+id/check_3"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="#555"
+                android:text="流程完结"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:background="@drawable/form_element_background"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:text="审批人:"/>
+
+            <TextView
+                android:id="@+id/approverna"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:singleLine="true"
+                android:background="@color/white"
+                android:textSize="17sp"
+                android:textColor="@color/black"
+                android:text=""/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="5dp"
+            android:background="@drawable/form_element_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                android:text="备注"/>
+
+            <EditText
+                android:id="@+id/remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="18sp"
+                android:padding="10dp"
+                android:background="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_10dp">
+        <Button
+            android:id="@+id/post_btn"
+            android:layout_width="@dimen/margin_200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#2BB962"
+            android:textColor="#fff"
+            android:text="提交"/>
+    </LinearLayout>
+</LinearLayout>

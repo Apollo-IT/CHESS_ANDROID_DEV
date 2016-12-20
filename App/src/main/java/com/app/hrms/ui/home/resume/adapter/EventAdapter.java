@@ -70,9 +70,32 @@ public class EventAdapter extends ArrayAdapter<EventInfo>  {
 				holder.txtTitle.setText(param.getParamName());
 			}
 		}
+		for (ParamModel param: paramMap.get("par003")) {
+			if (param.getParamValue().equals(event.getEstua())) {
+				holder.txtEstua.setText(param.getParamName());
+			}
+		}
+		String massn = event.getMassn();
+		String par = "";
+		if(massn.equals("01")) par = "par041";
+		if(massn.equals("02")) par = "par042";
+		if(massn.equals("03")) par = "par043";
+		if(massn.equals("04")) par = "par044";
+		if(massn.equals("05")) par = "par045";
+		if(massn.equals("08")) par = "par046";
+		if(massn.equals("06")){
+			holder.txtMassg.setText("退休");
+		}else if(massn.equals("07")){
+			holder.txtMassg.setText("返聘");
+		}else if(!par.equals("")){
+			for (ParamModel param: paramMap.get(par)) {
+				if (param.getParamValue().equals(event.getEstua())) {
+					holder.txtMassg.setText(param.getParamName());
+				}
+			}
+		}
 		holder.txtBegda.setText(event.getBegda());
-		holder.txtMassg.setText(event.getMassg());
-		holder.txtEstua.setText(event.getEstua());
+
 		return parentView;
 	}
 	
@@ -83,6 +106,5 @@ public class EventAdapter extends ArrayAdapter<EventInfo>  {
 		TextView txtBegda;
 		TextView txtMassg;
 		TextView txtEstua;
-
     }
 }

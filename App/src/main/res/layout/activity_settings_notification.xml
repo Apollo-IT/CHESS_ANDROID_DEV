@@ -33,13 +33,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:text="@string/turnedon" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 android:textSize="18sp"
                 android:textColor="@color/black"
@@ -61,25 +61,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:text="@string/sound_alert"/>
 
             <com.app.hrms.widget.switchbutton.SwitchButton
+                android:id="@+id/sound_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 rsb:animationVelocity="8"
                 rsb:measureFactor="1.5"
                 rsb:offDrawable="@drawable/ios_switch_off"
-                rsb:onColor="@color/white"
+                rsb:onColor="#4cd864"
                 rsb:thumbDrawable="@mipmap/ios_switch_thumb"
                 rsb:thumb_marginBottom="-8dp"
                 rsb:thumb_marginLeft="-5dp"
                 rsb:thumb_marginRight="-5dp"
                 rsb:thumb_marginTop="-2.5dp"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>
 
         </RelativeLayout>
@@ -95,30 +96,30 @@
             android:background="@color/white">
 
             <com.app.hrms.widget.switchbutton.SwitchButton
+                android:id="@+id/vibration_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 rsb:animationVelocity="8"
                 rsb:measureFactor="1.5"
                 rsb:offDrawable="@drawable/ios_switch_off"
-                rsb:onColor="@color/white"
+                rsb:onColor="#4cd864"
                 rsb:thumbDrawable="@mipmap/ios_switch_thumb"
                 rsb:thumb_marginBottom="-8dp"
                 rsb:thumb_marginLeft="-5dp"
                 rsb:thumb_marginRight="-5dp"
                 rsb:thumb_marginTop="-2.5dp"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:text="@string/vibrate_alert"/>
         </RelativeLayout>
-
     </LinearLayout>
 
 </LinearLayout>

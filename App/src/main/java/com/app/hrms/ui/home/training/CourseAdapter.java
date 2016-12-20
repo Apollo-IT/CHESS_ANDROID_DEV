@@ -55,6 +55,7 @@ public class CourseAdapter extends BaseAdapter {
             holder.txtDate = (TextView)convertView.findViewById(R.id.txtDate);
             holder.txtCourseStyle = (TextView)convertView.findViewById(R.id.txtCourseStyle);
             holder.txtCourseName = (TextView)convertView.findViewById(R.id.txtCourseName);
+            holder.txtResult = (TextView)convertView.findViewById(R.id.result_txt);
             convertView.setTag(holder);
         }
 
@@ -68,6 +69,14 @@ public class CourseAdapter extends BaseAdapter {
         holder.txtCourseName.setText(object.getCouna());
         holder.txtDate.setText("期间： " + object.getBegda() + " - " + object.getEndda());
 
+        if(object.getCoust().equals("02")){
+            holder.txtResult.setText("已报名");
+        }else if(object.getCoust().equals("03")){
+            holder.txtResult.setText("已取消");
+        }else{
+            holder.txtResult.setText("");
+        }
+
         return convertView;
     }
 
@@ -75,5 +84,6 @@ public class CourseAdapter extends BaseAdapter {
         TextView txtCourseStyle;
         TextView txtCourseName;
         TextView txtDate;
+        TextView txtResult;
     }
 }

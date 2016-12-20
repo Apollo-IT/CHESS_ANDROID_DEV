@@ -97,6 +97,10 @@ public class SalaryActivity extends UserSetBaseActivity implements View.OnClickL
                     intent.putExtra("p1004", py2000.getDouble("p1004"));
                     intent.putExtra("p1005", py2000.getDouble("p1005"));
                     intent.putExtra("p1006", py2000.getDouble("p1006"));
+                    intent.putExtra("p2000", py2001.getDouble("p2000"));
+                    intent.putExtra("p2001", py2001.getDouble("p2001"));
+                    intent.putExtra("p2002", py2001.getDouble("p2002"));
+                    intent.putExtra("nzjj",  py2002.getDouble("nzjj"));
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -195,15 +199,39 @@ public class SalaryActivity extends UserSetBaseActivity implements View.OnClickL
 
                 try {
                     txtSalary1.setText(Utils.convertCredit(py2000.getDouble("SFGZ")));
-                    txtSalary2.setText(Utils.convertCredit(py2000.getDouble("YFZJ")));
+                    //应发工资
+                    double v1 = py2000.getDouble("p1000")
+                            + py2000.getDouble("p1001")
+                            + py2000.getDouble("p1002")
+                            + py2000.getDouble("p1003")
+                            + py2000.getDouble("p1004")
+                            + py2000.getDouble("p1005")
+                            + py2000.getDouble("p1006")
+                            + py2001.getDouble("p2000")
+                            + py2001.getDouble("p2001")
+                            + py2001.getDouble("p2002")
+                            + py2002.getDouble("nzjj");
+                    txtSalary2.setText(Utils.convertCredit(v1));
 
-                    double v = py2000.getDouble("p3000") + py2000.getDouble("p3001") + py2000.getDouble("p3002") + py2000.getDouble("p3003") +
-                            py2000.getDouble("p3004") + py2000.getDouble("p3005") + py2000.getDouble("p3006") + py2000.getDouble("p3007") +
-                            py2000.getDouble("p3008") +py2000.getDouble("p3009");
-                    txtSalary3.setText(Utils.convertCredit(v));
-                    txtSalary4.setText(Utils.convertCredit(py2000.getDouble("GRSDS")));
-                    v = py2000.getDouble("p1007") + py2000.getDouble("p1008") + py2000.getDouble("p1009") + py2000.getDouble("p1010");
-                    txtSalary5.setText(Utils.convertCredit(v));
+                    //社会保险
+                    double v2 = py2000.getDouble("p3000")
+                            + py2000.getDouble("p3002")
+                            + py2000.getDouble("p3004")
+                            + py2000.getDouble("p3008");
+                    txtSalary3.setText(Utils.convertCredit(v2));
+
+                    //个人所得税
+                    double v3 = py2000.getDouble("GRSDS")
+                            + py2001.getDouble("JJGS")
+                            + py2002.getDouble("JJGS");
+                    txtSalary4.setText(Utils.convertCredit(v3));
+
+                    //其他扣除
+                    double v4 = py2000.getDouble("p1007")
+                            + py2000.getDouble("p1008")
+                            + py2000.getDouble("p1009")
+                            + py2000.getDouble("p1010");
+                    txtSalary5.setText(Utils.convertCredit(v4));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

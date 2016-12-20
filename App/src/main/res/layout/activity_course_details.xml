@@ -270,7 +270,37 @@
                     android:text=""/>
 
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_10dp">
+                <TextView
+                    android:id="@+id/signup_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#28A7E3"
+                    android:paddingLeft="@dimen/margin_20dp"
+                    android:paddingRight="@dimen/margin_20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/white"
+                    android:text="报名"/>
 
+                <TextView
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="#FA2400"
+                    android:paddingLeft="@dimen/margin_20dp"
+                    android:paddingRight="@dimen/margin_20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/white"
+                    android:text="取消"/>
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -4,19 +4,31 @@ import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.hrms.helper.AppData;
 import com.app.hrms.helper.AuthHelper;
 import com.app.hrms.message.DemoCache;
 import com.app.hrms.message.config.Preferences;
+import com.app.hrms.message.config.UserPreferences;
+import com.app.hrms.message.contact.ContactHelper;
 import com.app.hrms.message.main.helper.SystemMessageUnreadManager;
 import com.app.hrms.message.main.reminder.ReminderItem;
 import com.app.hrms.message.main.reminder.ReminderManager;
+import com.app.hrms.message.session.NimDemoLocationProvider;
+import com.app.hrms.message.session.SessionHelper;
 import com.app.hrms.message.ui.BaseActivity;
 import com.app.hrms.message.ui.RecentListFragment;
 import com.app.hrms.model.AppCookie;
@@ -25,34 +37,65 @@ import com.app.hrms.settings.SettingsFragment;
 import com.app.hrms.sign.SignFragment;
 import com.app.hrms.ui.home.HomeFragment;
 import com.app.hrms.ui.login.LoginActivity;
+import com.app.hrms.utils.gps.GPSService;
+import com.app.hrms.utils.notification.NotificationService;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.jauker.widget.BadgeView;
+import com.netease.nim.uikit.ImageLoaderKit;
+import com.netease.nim.uikit.NimUIKit;
+import com.netease.nim.uikit.cache.DataCacheManager;
 import com.netease.nim.uikit.cache.FriendDataCache;
+import com.netease.nim.uikit.cache.NimUserInfoCache;
 import com.netease.nim.uikit.cache.TeamDataCache;
+import com.netease.nim.uikit.common.util.log.LogUtil;
+import com.netease.nim.uikit.contact.ContactProvider;
+import com.netease.nim.uikit.contact.core.query.PinYin;
 import com.netease.nim.uikit.permission.MPermission;
+import com.netease.nim.uikit.session.viewholder.MsgViewHolderThumbBase;
 import com.netease.nim.uikit.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.uinfo.UserInfoObservable;
 import com.netease.nimlib.sdk.AbortableFuture;
+import com.netease.nimlib.sdk.InvocationFuture;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.NimIntent;
+import com.netease.nimlib.sdk.NimStrings;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.SDKOptions;
+import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
+import com.netease.nimlib.sdk.avchat.model.AVChatAttachment;
 import com.netease.nimlib.sdk.friend.FriendService;
+import com.netease.nimlib.sdk.msg.MessageNotifierCustomization;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
 import com.netease.nimlib.sdk.msg.SystemMessageService;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SystemMessageStatus;
 import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
 import com.netease.nimlib.sdk.team.TeamService;
+import com.netease.nimlib.sdk.team.constant.TeamFieldEnum;
+import com.netease.nimlib.sdk.team.model.IMMessageFilter;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment;
+import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.netease.nim.uikit.common.util.sys.NetworkUtil.TAG;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, ReminderManager.UnreadNumChangedCallback {
@@ -81,7 +124,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private UserInfoObservable.UserInfoObserver userInfoObserver;
 
     private BadgeView badgeView;
-    private BroadcastReceiver receiver;
 
     public static MainActivity instance;
 
@@ -111,8 +153,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         String token = Preferences.getUserToken();
 
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
-            wangyiLogin(account, token);
+            NIMClient.getService(AuthService.class).logout();
+
         }
+
+        onParseIntent();
 
         imgTabHome = (ImageView)findViewById(R.id.imgTabHome);
         imgTabChat = (ImageView)findViewById(R.id.imgTabChat);
@@ -138,21 +183,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         showHomeFragment();
 
-        if (AppCookie.getInstance().canAutologin(this)) {
-
-            final SVProgressHUD hud = new SVProgressHUD(this);
-            hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
-            AuthHelper.getInstance().login(this, AppCookie.getInstance().getUsername(this), AppCookie.getInstance().getPassword(this), new AuthHelper.LoginCallback() {
-                @Override
-                public void onSuccess(MemberModel member) {
-                    hud.showSuccessWithStatus("Success!");
-                }
-                @Override
-                public void onFailed(int error) {
-                    hud.showErrorWithStatus("Failed!");
-                }
-            });
-        }
         //----------------------------JUC Added---------------------------------------
         badgeView = (BadgeView)findViewById(R.id.badge);
         badgeView.setTextSize(14.0f);
@@ -160,11 +190,63 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         recentListFragment = new RecentListFragment();
 
         msgLoaded = recentListFragment.msgLoaded;
+
+        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(onlineStatusObserver, true);
+        NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(loginSyncStatusObserver, true);
+        // auto login
+        if (AppCookie.getInstance().canAutologin(this)) {
+            final SVProgressHUD hud = new SVProgressHUD(this);
+            hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
+
+            NIMClient.getService(AuthService.class).logout();
+            AuthHelper.getInstance().login(this, AppCookie.getInstance().getUsername(this), AppCookie.getInstance().getPassword(this), new AuthHelper.LoginCallback() {
+                @Override
+                public void onSuccess(MemberModel member) {
+                    hud.showSuccessWithStatus("登陆成功");
+                    String account = member.getPernr();
+                    String token = member.getToken();
+                    doWangyiLogin(account, token);
+
+                    //start push service
+                    AppData.setMemberID(member.getPernr());
+                    Intent mIntent = new Intent(MainActivity.this, NotificationService.class);
+                    startService(mIntent);
+                }
+                @Override
+                public void onFailed(int error) {
+                    hud.showErrorWithStatus("登陆失败");
+                }
+            });
+        }
     }
 
+    Observer<StatusCode> onlineStatusObserver = new Observer<StatusCode> () {
+        public void onEvent(StatusCode status) {
+            Log.i("tag", "User status changed to: " + status);
+        }
+    };
+    public void doWangyiLogin(String account, String token){
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
+
+            saveLoginInfo(account, token);
+            wangyiLogin(account, token);
+        }
+    }
+    Observer<LoginSyncStatus> loginSyncStatusObserver = new Observer<LoginSyncStatus>() {
+        @Override
+        public void onEvent(LoginSyncStatus status) {
+            if (status == LoginSyncStatus.BEGIN_SYNC) {
+                LogUtil.i(TAG, "login sync data begin");
+            } else if (status == LoginSyncStatus.SYNC_COMPLETED) {
+                LogUtil.i(TAG, "login sync data completed");
+            }
+        }
+    };
+
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        onParseIntent();
     }
 
     public void doLogin() {
@@ -281,6 +363,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             unregisterUserInfoObserver();
         }
+//        NIMClient.getService(SystemMessageService.class).resetSystemMessageUnreadCount();
     }
     private void registerUserInfoObserver() {
         if (userInfoObserver == null) {
@@ -397,7 +480,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onEvent(Integer unreadCount) {
             SystemMessageUnreadManager.getInstance().setSysMsgUnreadCount(unreadCount);
-//            ReminderManager.getInstance().updateContactUnreadNum(unreadCount);
+            ReminderManager.getInstance().updateContactUnreadNum(unreadCount);
         }
     };
 
@@ -514,7 +597,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         loginRequest.setCallback(new RequestCallback<LoginInfo>() {
             @Override
             public void onSuccess(LoginInfo param) {
-
+                // 构建缓存
+                DataCacheManager.buildDataCacheAsync();
                 registerObservers(true);
                 registerMsgUnreadInfoObserver(true);
                 registerSystemMessageObservers(true);
@@ -545,4 +629,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         Preferences.saveUserAccount(account);
         Preferences.saveUserToken(token);
     }
+
+    private void onParseIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(NimIntent.EXTRA_NOTIFY_CONTENT)) {
+            IMMessage message = (IMMessage) getIntent().getSerializableExtra(NimIntent.EXTRA_NOTIFY_CONTENT);
+            SessionHelper.startTeamSession(this, message.getSessionId());
+        }
+    }
+
 }

@@ -1,6 +1,9 @@
 package com.app.hrms.utils;
 
 public class Urls {
+    public static final String PUSH_SERVER  = "www.chess-top.com";
+    public static final int    PUSH_PORT    = 3000;
+
     public static final String BASE_URL = "http://www.chess-top.com:8080";
 //	public static final String BASE_URL = "http://192.168.1.177:8080";
 
@@ -87,6 +90,8 @@ public class Urls {
     public static final String SAVE_APPEAL_OVERTIME = "/sys/workflow/mobile/saveOvertimeAppeal.do";
     public static final String SAVE_APPEAL_PUNCH    = "/sys/workflow/mobile/savePunchAppeal.do";
 
+    public static final String SAVE_APPROVAL        = "/sys/workflow/mobile/saveApproval.do";
+
     // subordinate
     public static final String API_ACADEMIC_WEBVIEW  = "/sys/hrmanage/manager/mobile/webview/employinfo.do?memberID=";
     public static final String API_ATTENDANCE_WEBVIEW= "/sys/hrmanage/manager/mobile/webview/attendance.do?memberID=";
@@ -104,5 +109,13 @@ public class Urls {
     public static final String SURBO_EVENT_LIST      = "/sys/hrmanage/manager/mobile/subordinates/listTrainingEvent.do";
 
     public static final String API_TRAINING_CHART    = "/sys/hrmanage/manager/mobile/subordinates/trainingChart.do";
+
+    //http://www.chess-top.com:8080/sys/hrmanage/mobile/listPersonEvent.do?objid=00014115&type=PA1008&page=1&rows=10
+    public static final String API_CONTACT_INFO      = "/sys/hrmanage/mobile/listPersonEvent.do?type=PA1008&page=1&rows=10";
+    public static final String API_SAVE_PHONE_NUMBER = "/sys/hrmanage/employee/mobile/saveCommunicationInfo.do";
+
+    public static final String API_ORG_UNIT_TREE     = "/sys/organize/mobile/listOrgUnitTreeJsonData.do";
+
+    public static final String API_SEND_EMAIL        = "/sys/member/mobile/sendSystemEmail.do";
 
 }

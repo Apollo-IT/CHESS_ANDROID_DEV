@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SelectEmployeeActivity extends AppCompatActivity implements TreeNode.TreeNodeClickListener {
-
     private LinearLayout containerView;
     private TreeNode root;
     private AndroidTreeView tView;
@@ -74,8 +73,9 @@ public class SelectEmployeeActivity extends AppCompatActivity implements TreeNod
             params.put("SOBID", objid);
         }
         params.put("OTYPE", otype);
+        params.put("COOBJID", AppCookie.getInstance().getCurrentUser().getCobjid());
 
-        String url = "/sys/organize/mobile/listOrgUnitTreeJsonData.do" ;
+        String url = Urls.API_ORG_UNIT_TREE;
         client.post(this, Urls.BASE_URL + url, params, new AsyncHttpResponseHandler() {
             final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 

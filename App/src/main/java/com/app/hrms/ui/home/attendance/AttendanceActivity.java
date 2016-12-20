@@ -42,6 +42,7 @@ import java.util.List;
 public class AttendanceActivity extends UserSetBaseActivity implements View.OnClickListener {
 
     private final String[] attendanceType = {"缺勤", "出差", "加班", "缺卡", "迟到", "早退", "正常"};
+    private View statusView;
     private TextView txtDate;
     private TextView txtReason;
     private TextView txtAppeal;
@@ -58,6 +59,7 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
     private GridView gridView = null;
     private ViewFlipper flipper;
     private TextView currentMonth;
+
 
     private GestureDetector gestureDetector = null;
     private CalendarAdapter calV = null;
@@ -82,7 +84,8 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
         month_c = Integer.parseInt(currentDate.split("-")[1]);
         day_c = Integer.parseInt(currentDate.split("-")[2]);
 
-
+        statusView = findViewById(R.id.status_view);
+        statusView.setVisibility(View.GONE);
         txtDate = (TextView)findViewById(R.id.txtDate);
         txtReason = (TextView)findViewById(R.id.txtReason);
         txtAppeal = (TextView)findViewById(R.id.txtAppeal);
@@ -95,7 +98,12 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
         txtAtten4 = (TextView)findViewById(R.id.txtAtten4);
 
         TextView txtTitle = (TextView)findViewById(R.id.txtTitle);
-        txtTitle.setText(R.string.attendance);
+        if(isMyAccount()){
+            txtTitle.setText(R.string.attendance);
+        }else{
+            txtTitle.setText("下属考勤");
+        }
+
 
         currentMonth = (TextView) findViewById(R.id.currentMonth);
         btnPrevMonth = (ImageView)findViewById(R.id.btnPrevMonth);
@@ -184,8 +192,6 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
 
     public void addTextToTopTextView(TextView view) {
         StringBuffer textDate = new StringBuffer();
-        // draw = getResources().getDrawable(R.drawable.top_day);
-        // view.setBackgroundDrawable(draw);
         textDate.append(calV.getShowYear()).append("年").append(calV.getShowMonth()).append("月").append("\t");
         view.setText(textDate);
     }
@@ -238,25 +244,13 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
         gridView = new GridView(this);
         gridView.setNumColumns(7);
         gridView.setColumnWidth(40);
-        // gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         if (Width == 720 && Height == 1280) {
             gridView.setColumnWidth(40);
         }
         gridView.setGravity(Gravity.CENTER_VERTICAL);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
-        // 去除gridView边框
         gridView.setVerticalSpacing(1);
         gridView.setHorizontalSpacing(1);
-        /*
-        gridView.setOnTouchListener(new View.OnTouchListener() {
-            // 将gridview中的触摸事件回传给gestureDetector
-
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                return AttendanceActivity.this.gestureDetector.onTouchEvent(event);
-            }
-        });
-        */
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -275,6 +269,8 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
                     String scheduleMonth = calV.getShowMonth();
 
                     showAttendanceDetails(Integer.parseInt(scheduleYear), Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
+                }else{
+                    statusView.setVisibility(View.GONE);
                 }
             }
         });
@@ -303,10 +299,17 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
 
                 if (punch.getIntype() != PunchInfo.NORMAL || punch.getOutype() != PunchInfo.NORMAL) {
                     btnAppeal.setVisibility(View.VISIBLE);
+                    statusView.setVisibility(View.VISIBLE);
                 } else {
+                    btnAppeal.setVisibility(View.GONE);
+                    statusView.setVisibility(View.GONE);
+                }
+                if(!isMyAccount()){
                     btnAppeal.setVisibility(View.GONE);
                 }
                 break;
+            }else {
+                statusView.setVisibility(View.GONE);
             }
         }
     }
@@ -350,6 +353,7 @@ public class AttendanceActivity extends UserSetBaseActivity implements View.OnCl
                 txtAtten2.setText(n2 + "次");
                 txtAtten3.setText(n3 + "次");
                 txtAtten4.setText(n4 + "次");
+                statusView.setVisibility(View.GONE);
             }
 
             @Override

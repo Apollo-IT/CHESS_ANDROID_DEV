@@ -37,7 +37,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_image"
                     android:src="@mipmap/atte_icon_more"/>
@@ -47,58 +47,25 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:scaleType="centerCrop"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="18dp"
                     android:src="@mipmap/user_placeholder"/>
 
                 <TextView
                     android:id="@+id/txtUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:text="@string/photo"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/btnName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/settings_item_drawable">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/empty_image"
-                    android:src="@mipmap/atte_icon_more"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="18dp"
-                    android:text="@string/username"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:text="@string/nickname"/>
-            </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:background="#e9e9e9"/>
 
             <RelativeLayout
@@ -111,7 +78,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_image"
                     android:src="@mipmap/atte_icon_more"/>
@@ -119,46 +86,21 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:textColor="#000000"
                     android:text="@string/mobile"/>
 
                 <TextView
+                    android:id="@+id/phone_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="18dp"
                     android:text="@string/mobile"/>
             </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/btnAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/settings_item_drawable">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/empty_image"
-                    android:src="@mipmap/atte_icon_more"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:text="@string/address"/>
-            </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
@@ -174,7 +116,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_image"
                     android:src="@mipmap/atte_icon_more"/>
@@ -182,7 +124,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:textColor="@color/black"
@@ -192,34 +134,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:background="#e9e9e9"/>
-
-            <RelativeLayout
-                android:id="@+id/btnChatRecord"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/settings_item_drawable">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/empty_image"
-                    android:src="@mipmap/atte_icon_more"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:text="@string/chat_record"/>
-            </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
@@ -235,7 +151,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_image"
                     android:src="@mipmap/atte_icon_more"/>
@@ -243,7 +159,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:textColor="@color/black"
@@ -265,7 +181,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_image"
                     android:src="@mipmap/atte_icon_more"/>
@@ -273,7 +189,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:textColor="@color/black"
@@ -283,7 +199,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:background="#e9e9e9"/>
 
             <RelativeLayout
@@ -296,7 +212,7 @@
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/empty_image"
                     android:src="@mipmap/atte_icon_more"/>
@@ -304,7 +220,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
                     android:textSize="18sp"
                     android:textColor="@color/black"

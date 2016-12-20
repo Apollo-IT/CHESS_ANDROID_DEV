@@ -87,23 +87,16 @@ public class LogAdapter extends BaseAdapter {
         if (LogInfo.RELEASE_STATUS_PUBLISH.equals(object.getRelease())){
             return;
         }
-
-        final LogInfo log = new LogInfo();
-
-        log.setRowId(object.getRowId());
-        log.setDate(object.getDate());
-        log.setContent(object.getContent());
-        log.setRelease(object.getRelease());
-        log.setRelease(LogInfo.RELEASE_STATUS_PUBLISH);
+        final String prev_status = object.getRelease();
+        object.setRelease(LogInfo.RELEASE_STATUS_PUBLISH);
 
 
         final SVProgressHUD hud = new SVProgressHUD(context);
         hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
-        LogHelper.getInstance().saveLog(context, log, new LogHelper.SaveLogCallback() {
+        LogHelper.getInstance().saveLog(context, object, new LogHelper.SaveLogCallback() {
             @Override
             public void onSuccess() {
                 hud.dismiss();
-                object.setRelease(log.getRelease());
                 notifyDataSetInvalidated();
                 try{
                     if(gridView!=null){
@@ -115,7 +108,8 @@ public class LogAdapter extends BaseAdapter {
 
             @Override
             public void onFailed(int retcode) {
-                hud.showErrorWithStatus("Failed!");
+                object.setRelease(prev_status);
+                hud.showErrorWithStatus("发布失败");
             }
         });
     }

@@ -63,10 +63,12 @@ import java.util.List;
 import java.util.Map;
 
 public class HRMSApplication extends MultiDexApplication {
-
+    public static HRMSApplication instance;
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+
         System.out.println("APP: onAppCreate");
         // init ImageLoader
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(this);
@@ -122,7 +124,7 @@ public class HRMSApplication extends MultiDexApplication {
         }
     }
 
-    private SDKOptions getOptions() {
+    public SDKOptions getOptions() {
         SDKOptions options = new SDKOptions();
 
         // 如果将新消息通知提醒托管给SDK完成，需要添加以下配置。
@@ -135,7 +137,16 @@ public class HRMSApplication extends MultiDexApplication {
         config.notificationSmallIconId = R.mipmap.ic_launcher;
 
         // 通知铃声的uri字符串
-        config.notificationSound = "android.resource://com.app.hrms/raw/msg";
+        if(AppData.isPushSoundEnabled()){
+            config.notificationSound = "android.resource://com.app.hrms/raw/msg";
+        }else{
+            config.notificationSound = "";
+        }
+        if(AppData.isPushVibrationEnabled()){
+            config.vibrate = true;
+        }else{
+            config.vibrate = false;
+        }
 
         // 呼吸灯配置
         config.ledARGB = Color.GREEN;

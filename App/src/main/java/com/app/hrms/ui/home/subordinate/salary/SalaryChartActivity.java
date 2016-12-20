@@ -52,9 +52,9 @@ public class SalaryChartActivity extends ChartActivity{
 
         loadData();
 
-//        String memberID = AppCookie.getInstance().getCurrentUser().getPernr();
-//        this.showWebView(Urls.BASE_URL + Urls.API_SALARY_WEBVIEW + memberID);
-//        webView.addJavascriptInterface(new WebAppInterface(this), "Android");
+        String memberID = AppCookie.getInstance().getCurrentUser().getPernr();
+        this.showWebView(Urls.BASE_URL + Urls.API_SALARY_WEBVIEW + memberID);
+        webView.addJavascriptInterface(new WebAppInterface(this), "Android");
     }
     /***********************************************************************************************
      *                                          Load Data

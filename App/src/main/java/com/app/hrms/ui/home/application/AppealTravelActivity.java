@@ -69,8 +69,6 @@ public class AppealTravelActivity extends AppCompatActivity implements View.OnCl
         approverText = (TextView)findViewById(R.id.approver_txt);
         postButton = (TextView)findViewById(R.id.post_btn);
 
-        begdatext.setOnClickListener(this);
-        enddaText.setOnClickListener(this);
         approverText.setOnClickListener(this);
         postButton.setOnClickListener(this);
     }
@@ -85,7 +83,7 @@ public class AppealTravelActivity extends AppCompatActivity implements View.OnCl
                 Utils.hideKeyboard(this);
                 finish();
                 break;
-            case R.id.begda_txt:
+            case R.id.begda_txt_btn:
                 DatePickerDialog dpd1 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -100,7 +98,7 @@ public class AppealTravelActivity extends AppCompatActivity implements View.OnCl
                 );
                 dpd1.show(getFragmentManager(), "Datepickerdialog");
                 break;
-            case R.id.endda_txt:
+            case R.id.endda_txt_btn:
                 DatePickerDialog dpd2 = DatePickerDialog.newInstance(
                         new DatePickerDialog.OnDateSetListener() {
                             @Override

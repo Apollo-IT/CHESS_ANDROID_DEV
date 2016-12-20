@@ -32,6 +32,8 @@ public class TrainingActivity extends UserSetBaseActivity implements View.OnClic
     private String begda = "";
     private String endda = "";
 
+    public static List<CourseInfo> courseList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,24 +75,32 @@ public class TrainingActivity extends UserSetBaseActivity implements View.OnClic
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (btnTab1.isSelected()) return;
-
                 CourseInfo course = (CourseInfo) listView.getAdapter().getItem(position);
-                Intent intent = new Intent(TrainingActivity.this, CourseDetailsActivity.class);
-                intent.putExtra("course", course);
-                startActivity(intent);
+                if (btnTab1.isSelected()){
+                    Intent intent = new Intent(TrainingActivity.this, TrainingDetailActivity.class);
+                    intent.putExtra("course", course);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(TrainingActivity.this, CourseDetailsActivity.class);
+                    intent.putExtra("course", course);
+                    startActivity(intent);
+                }
             }
         });
 
         TextView txtTitle = (TextView)findViewById(R.id.txtTitle);
-        txtTitle.setText("我的培训");
+        if(isMyAccount()){
+            txtTitle.setText("我的培训");
+        }else{
+            txtTitle.setText("下属培训");
+        }
     }
 
     private void loadList(){
         if (btnTab1.isSelected()) {
             getCourseStatusList(begda, endda);
         } else {
-            getCourseList(begda, endda);
+            getCourseList(begda, endda, true);
         }
 
     }
@@ -140,11 +150,13 @@ public class TrainingActivity extends UserSetBaseActivity implements View.OnClic
                 getCourseStatusList(begda, endda);
                 break;
             case R.id.btnTab2:
-                btnTab1.setSelected(false);
-                btnTab2.setSelected(true);
-                mark1.setVisibility(View.GONE);
-                mark2.setVisibility(View.VISIBLE);
-                getCourseList(begda, endda);
+                if(isMyAccount()){
+                    btnTab1.setSelected(false);
+                    btnTab2.setSelected(true);
+                    mark1.setVisibility(View.GONE);
+                    mark2.setVisibility(View.VISIBLE);
+                    getCourseList(begda, endda, true);
+                }
                 break;
             case R.id.txtSearch:
                 loadList();
@@ -152,18 +164,20 @@ public class TrainingActivity extends UserSetBaseActivity implements View.OnClic
         }
     }
 
-    public void getCourseStatusList(String begda, String endda) {
+    public void getCourseStatusList(final String begda, final String endda) {
 
         final SVProgressHUD hud = new SVProgressHUD(this);
         hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
         TrainingHelper.getInstance().getCouseSatusList(this,currentUser.getPernr(), begda, endda, new TrainingHelper.CourseListCallback() {
             @Override
-            public void onSuccess(List<CourseInfo> courseList) {
+            public void onSuccess(List<CourseInfo> list) {
                 hud.dismiss();
-                CourseStatusAdapter adapter = new CourseStatusAdapter(TrainingActivity.this, courseList, R.layout.list_course_status_item);
+                CourseStatusAdapter adapter = new CourseStatusAdapter(TrainingActivity.this, list, R.layout.list_course_status_item);
                 listView.setAdapter(adapter);
+                if(courseList==null){
+                    getCourseList(begda, endda, false);
+                }
             }
-
             @Override
             public void onFailed(int retcode) {
                 hud.showErrorWithStatus("Failed!");
@@ -171,15 +185,18 @@ public class TrainingActivity extends UserSetBaseActivity implements View.OnClic
         });
     }
 
-    public void getCourseList(String begda, String endda) {
+    public void getCourseList(String begda, String endda, final boolean show) {
         final SVProgressHUD hud = new SVProgressHUD(this);
         hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
         TrainingHelper.getInstance().getCourseList(this, currentUser.getPernr(), begda, endda, new TrainingHelper.CourseListCallback() {
             @Override
-            public void onSuccess(List<CourseInfo> courseList) {
+            public void onSuccess(List<CourseInfo> list) {
                 hud.dismiss();
-                CourseAdapter adapter = new CourseAdapter(TrainingActivity.this, courseList, R.layout.list_course_item);
-                listView.setAdapter(adapter);
+                courseList = list;
+                if(show){
+                    CourseAdapter adapter = new CourseAdapter(TrainingActivity.this, courseList, R.layout.list_course_item);
+                    listView.setAdapter(adapter);
+                }
             }
 
             @Override

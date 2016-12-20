@@ -29,8 +29,8 @@ public class TaskActivity extends UserSetBaseActivity implements View.OnClickLis
 
     private final String[] statusText1    = {"待完成任务", "进行中任务", "已完成任务", "已评估任务"};
     private final String[] statusValue1   = {"01", "02", "03", "04"};
-    private final String[] statusText2    = {"进行中任务", "待评估任务", "已评估任务"};
-    private final String[] statusValue2   = {"02", "03", "04"};
+    private final String[] statusText2    = {"待接收任务", "进行中任务", "待评估任务", "已评估任务"};
+    private final String[] statusValue2   = {"01", "02", "03", "04"};
 
     private View btnTab1, btnTab2;
     private View mark1, mark2;
@@ -40,7 +40,7 @@ public class TaskActivity extends UserSetBaseActivity implements View.OnClickLis
 
     private int currentTab = 1;
     private int currentStatus1 = 0;
-    private int currentStatus2 = 1;
+    private int currentStatus2 = 2;
     private ArrayList<TaskInfo>dataList;
     private TaskInfoAdapter adapter;
 
@@ -65,6 +65,9 @@ public class TaskActivity extends UserSetBaseActivity implements View.OnClickLis
         //new task
         newTaskBtn = findViewById(R.id.new_task_btn);
         newTaskBtn.setOnClickListener(this);
+        if(!isMyAccount()){
+            newTaskBtn.setVisibility(View.INVISIBLE);
+        }
         //back button
         View backBtn = findViewById(R.id.btnBack);
         backBtn.setOnClickListener(this);
@@ -179,6 +182,7 @@ public class TaskActivity extends UserSetBaseActivity implements View.OnClickLis
         }
     }
     private void listItemClicked(TaskInfo taskInfo){
+        if(!isMyAccount()) return;
         if(taskInfo==null) return;
         Intent intent = new Intent(this, TaskDetailActivity.class);
         intent.putExtra("task", taskInfo);

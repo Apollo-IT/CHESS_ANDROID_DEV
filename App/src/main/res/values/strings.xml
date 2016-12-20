@@ -17,7 +17,7 @@
     <string name="nickname">昵称</string>
     <string name="mobile">手机</string>
     <string name="address">居住地址</string>
-    <string name="notification">人事活动</string>
+    <string name="notification">消息提示</string>
     <string name="chat_record">聊天记录</string>
     <string name="select_language">语言选择</string>
     <string name="feedback">意见与反馈</string>
@@ -29,7 +29,7 @@
     <string name="sound_alert">声音提示</string>
     <string name="vibrate_alert">震动提示</string>
     <string name="delete_chatrecord">清除聊天记录</string>
-    <string name="feedback_hint">为了第一时间帮助您解决问题，建议您留下邮箱或QQ号，今目标感谢有您一路相伴。</string>
+    <string name="feedback_hint">为了第一时间帮助您解决问题，建议您留下邮箱或QQ号，参数感谢有您一路相伴。</string>
     <string name="send">发送</string>
     <string name="department">人力资源部</string>
     <string name="email">132245@show.com</string>

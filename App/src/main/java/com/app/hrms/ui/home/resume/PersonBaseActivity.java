@@ -1,31 +1,23 @@
 package com.app.hrms.ui.home.resume;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.app.hrms.UserSetBaseActivity;
 import com.app.hrms.R;
+import com.app.hrms.UserSetBaseActivity;
 import com.app.hrms.helper.ImageHelper;
 import com.app.hrms.helper.ResumeHelper;
-import com.app.hrms.model.AppCookie;
 import com.app.hrms.model.MemberModel;
 import com.app.hrms.model.ParamModel;
 import com.app.hrms.utils.Urls;
 import com.app.hrms.widget.RoundedImageView;
 import com.bigkoo.svprogresshud.SVProgressHUD;
-import com.lling.photopicker.PhotoPickerActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -133,7 +125,7 @@ public class PersonBaseActivity extends UserSetBaseActivity implements View.OnCl
                 txtPlans.setText(member.getPlansname());
                 txtOrgeh.setText(member.getOrgehname());
                 editNachn.setText(member.getNachn());
-                txtBukrs.setText(member.getBukrs());
+                txtBukrs.setText(member.getConame());
                 txtKostl.setText(member.getKostl());
                 editWerks.setText(member.getWerks());
                 editBtrtl.setText(member.getBtrtl());
@@ -221,266 +213,11 @@ public class PersonBaseActivity extends UserSetBaseActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-//            case R.id.txtPersg: {
-//                final String[] persgList = new String[paramMap.get("par037").size()];
-//                final String[] persgValList = new String[paramMap.get("par037").size()];
-//                int i = 0;
-//                for (ParamModel param: paramMap.get("par037")) {
-//                    persgList[i] = param.getParamName();
-//                    persgValList[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(persgList, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtPersg.setText(persgList[which]);
-//                        if (!persgValList[which].equals(txtPersg.getTag())) {
-//                            txtPersk.setText("");
-//                            txtPersk.setTag(null);
-//                        }
-//                        txtPersg.setTag(persgValList[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//                break;
-//            case R.id.txtPersk: {
-//
-//                List<ParamModel> _list = new ArrayList<>();
-//                if ("01".equals(txtPersg.getTag())) {
-//                    _list = paramMap.get("par038");
-//                } else if ("02".equals(txtPersg.getTag())) {
-//                    _list = paramMap.get("par039");
-//                } else if("03".equals(txtPersg.getTag())) {
-//                    _list = paramMap.get("par040");
-//                }
-//
-//                if (_list.size() == 0) return;
-//
-//                final String[] perskList = new String[_list.size()];
-//                final String[] perskValList = new String[_list.size()];
-//                int i = 0;
-//                for (ParamModel param: _list) {
-//                    perskList[i] = param.getParamName();
-//                    perskValList[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(perskList, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtPersk.setText(perskList[which]);
-//                        txtPersk.setTag(perskValList[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//                break;
-
-//            case R.id.txtGesch: {
-//                final String[] geschList = new String[paramMap.get("par004").size()];
-//                final String[] geschValList = new String[paramMap.get("par004").size()];
-//                int i = 0;
-//                for (ParamModel param: paramMap.get("par004")) {
-//                    geschList[i] = param.getParamName();
-//                    geschValList[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(geschList, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtGesch.setText(geschList[which]);
-//                        txtGesch.setTag(geschValList[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//                break;
-//            case R.id.txtFatxt: {
-//                final String[] fatxtList = new String[paramMap.get("par006").size()];
-//                final String[] fatxtValList = new String[paramMap.get("par006").size()];
-//                int i = 0;
-//                for (ParamModel param: paramMap.get("par006")) {
-//                    fatxtList[i] = param.getParamName();
-//                    fatxtValList[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(fatxtList, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtFatxt.setText(fatxtList[which]);
-//                        txtFatxt.setTag(fatxtValList[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//
-//                break;
-//            case R.id.txtPcode: {
-//                final String[] pcodeList = new String[paramMap.get("par005").size()];
-//                final String[] pcodeValList = new String[paramMap.get("par005").size()];
-//                int i = 0;
-//                for (ParamModel param: paramMap.get("par005")) {
-//                    pcodeList[i] = param.getParamName();
-//                    pcodeValList[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(pcodeList, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtPcode.setText(pcodeList[which]);
-//                        txtPcode.setTag(pcodeValList[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//                break;
-//            case R.id.txtNatio: {
-//                final String[] countryArray = new String[countryList.size()];
-//                final String[] countryValArray = new String[countryList.size()];
-//                int i = 0;
-//                for (ParamModel param: countryList) {
-//                    countryArray[i] = param.getParamName();
-//                    countryValArray[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(countryArray, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtNatio.setText(countryArray[which]);
-//                        txtNatio.setTag(countryValArray[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//                break;
-//            case R.id.txtRacky: {
-//                final String[] nationalArray = new String[nationalList.size()];
-//                final String[] nationalValArray = new String[nationalList.size()];
-//                int i = 0;
-//                for (ParamModel param: nationalList) {
-//                    nationalArray[i] = param.getParamName();
-//                    nationalValArray[i] = param.getParamValue();
-//                    i++;
-//                }
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setItems(nationalArray, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        txtRacky.setText(nationalArray[which]);
-//                        txtRacky.setTag(nationalValArray[which]);
-//                    }
-//                });
-//                builder.show();
-//            }
-//                break;
-//            case R.id.txtEndat: {
-//                Calendar now = Calendar.getInstance();
-//                DatePickerDialog dpd = DatePickerDialog.newInstance(
-//                        new DatePickerDialog.OnDateSetListener() {
-//                            @Override
-//                            public void onDateSet(DatePickerDialog datePickerDialog, int y, int m, int d) {
-//                                txtEndat.setText(y + "-" + (m + 1) + "-" + d);
-//                            }
-//                        },
-//                        now.get(Calendar.YEAR),
-//                        now.get(Calendar.MONTH),
-//                        now.get(Calendar.DAY_OF_MONTH)
-//                );
-//                dpd.show(getFragmentManager(), "Datepickerdialog");
-//            }
-//                break;
-//            case R.id.txtJwdat: {
-//                Calendar now = Calendar.getInstance();
-//                DatePickerDialog dpd = DatePickerDialog.newInstance(
-//                        new DatePickerDialog.OnDateSetListener() {
-//                            @Override
-//                            public void onDateSet(DatePickerDialog datePickerDialog, int y, int m, int d) {
-//                                txtJwdat.setText(y + "-" + (m + 1) + "-" + d);
-//                            }
-//                        },
-//                        now.get(Calendar.YEAR),
-//                        now.get(Calendar.MONTH),
-//                        now.get(Calendar.DAY_OF_MONTH)
-//                );
-//                dpd.show(getFragmentManager(), "Datepickerdialog");
-//            }
-//                break;
-//            case R.id.txtGbdat: {
-//                Calendar now = Calendar.getInstance();
-//                DatePickerDialog dpd = DatePickerDialog.newInstance(
-//                        new DatePickerDialog.OnDateSetListener() {
-//                            @Override
-//                            public void onDateSet(DatePickerDialog datePickerDialog, int y, int m, int d) {
-//                                txtGbdat.setText(y + "-" + (m + 1) + "-" + d);
-//                            }
-//                        },
-//                        now.get(Calendar.YEAR),
-//                        now.get(Calendar.MONTH),
-//                        now.get(Calendar.DAY_OF_MONTH)
-//                );
-//                dpd.show(getFragmentManager(), "Datepickerdialog");
-//            }
-//                break;
-//            case R.id.imgAvatar:
-//                selectPhoto();
-//                if (isEditable) {
-//
-//                }
-//                break;
             case R.id.btnBack:
                 finish();
                 break;
         }
     }
 
-    public void selectPhoto() {
-        Intent intent = new Intent(this, PhotoPickerActivity.class);
-        intent.putExtra(PhotoPickerActivity.EXTRA_SHOW_CAMERA, false);
-        intent.putExtra(PhotoPickerActivity.EXTRA_SELECT_MODE, PhotoPickerActivity.MODE_SINGLE);
-        intent.putExtra(PhotoPickerActivity.EXTRA_MAX_MUN, PhotoPickerActivity.DEFAULT_NUM);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-    //-------------------------------------------------------------
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == Activity.RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST) {
-
-                ArrayList<String> result = data.getStringArrayListExtra(PhotoPickerActivity.KEY_RESULT);
-                if(result.size() == 0) return;
-
-                final SVProgressHUD hud = new SVProgressHUD(this);
-                hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
-                ImageHelper.getInstance().uploadPhoto(this, result.get(0), new ImageHelper.PhotoUploadCallback() {
-                    @Override
-                    public void onSuccess() {
-                        hud.showSuccessWithStatus("Success!");
-                        ImageLoader.getInstance().displayImage(Urls.BASE_URL + Urls.PHOTO + member.getPernr(), imgAvatar);
-                    }
-
-                    @Override
-                    public void onFailed(int error) {
-                        hud.showErrorWithStatus("Failed!");
-                    }
-                });
-            }
-        }
-    }
 }

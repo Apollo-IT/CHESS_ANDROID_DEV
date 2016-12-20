@@ -9,22 +9,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.app.hrms.helper.AppData;
+import com.app.hrms.helper.ContactHelper;
 import com.app.hrms.message.ui.BaseFragment;
 import com.app.hrms.model.AppCookie;
+import com.app.hrms.model.ContactInfo;
 import com.app.hrms.ui.login.LoginActivity;
+import com.app.hrms.utils.Urls;
 import com.app.hrms.widget.RoundedImageView;
 import com.app.hrms.R;
 
-import com.lling.photopicker.PhotoPickerActivity;
+import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 public class SettingsFragment extends BaseFragment implements View.OnClickListener {
 
-    public static final int PICK_IMAGE_REQUEST = 1000;
-
     private RoundedImageView imgAvatar;
+    private TextView phoneTextView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -32,17 +39,39 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
         imgAvatar = (RoundedImageView)viewRoot.findViewById(R.id.imgAvatar);
         imgAvatar.setCornerRadius(10.0f);
+        ImageLoader.getInstance().displayImage(Urls.BASE_URL + Urls.PHOTO + AppCookie.getInstance().getCurrentUser().getPernr(), imgAvatar);
         viewRoot.findViewById(R.id.btnPhoto).setOnClickListener(this);
-        viewRoot.findViewById(R.id.btnName).setOnClickListener(this);
         viewRoot.findViewById(R.id.btnMobile).setOnClickListener(this);
-        viewRoot.findViewById(R.id.btnAddress).setOnClickListener(this);
         viewRoot.findViewById(R.id.btnNotification).setOnClickListener(this);
-        viewRoot.findViewById(R.id.btnChatRecord).setOnClickListener(this);
         viewRoot.findViewById(R.id.btnSelectLang).setOnClickListener(this);
         viewRoot.findViewById(R.id.btnFeedback).setOnClickListener(this);
         viewRoot.findViewById(R.id.btnAbout).setOnClickListener(this);
         viewRoot.findViewById(R.id.btnLogout).setOnClickListener(this);
+        phoneTextView = (TextView)viewRoot.findViewById(R.id.phone_text);
         return viewRoot;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        getContactInfo();
+    }
+
+    private void getContactInfo(){
+        final SVProgressHUD hud = new SVProgressHUD(getActivity());
+        hud.showWithMaskType(SVProgressHUD.SVProgressHUDMaskType.Black);
+        ContactHelper.get(getActivity(), AppCookie.getInstance().getCurrentUser().getPernr(), new ContactHelper.Callback() {
+            @Override
+            public void onSuccess() {
+                ContactInfo info = AppData.contactInfo;
+                phoneTextView.setText(info.getPhoneNumber());
+                hud.dismiss();
+            }
+            @Override
+            public void onFailed(int error) {
+                hud.dismiss();
+            }
+        });
     }
 
     @Override
@@ -50,22 +79,13 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
         switch(view.getId()) {
             case R.id.btnPhoto:
-                selectPhoto();
-                break;
-            case R.id.btnName:
-                changeNickname();
+                //selectPhoto();
                 break;
             case R.id.btnMobile:
                 changeMobile();
                 break;
-            case R.id.btnAddress:
-                changeAddress();
-                break;
             case R.id.btnNotification:
                 setNotication();
-                break;
-            case R.id.btnChatRecord:
-                setChatRecord();
                 break;
             case R.id.btnSelectLang:
                 selectLanguage();
@@ -82,50 +102,13 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == Activity.RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST) {
-
-                ArrayList<String> result = data.getStringArrayListExtra(PhotoPickerActivity.KEY_RESULT);
-                if(result.size() == 0) return;
-
-                Bitmap bitmap = BitmapFactory.decodeFile(result.get(0));
-                imgAvatar.setImageBitmap(bitmap);
-            }
-        }
-    }
-
-
-    public void selectPhoto() {
-        Intent intent = new Intent(getActivity(), PhotoPickerActivity.class);
-        intent.putExtra(PhotoPickerActivity.EXTRA_SHOW_CAMERA, false);
-        intent.putExtra(PhotoPickerActivity.EXTRA_SELECT_MODE, PhotoPickerActivity.MODE_SINGLE);
-        intent.putExtra(PhotoPickerActivity.EXTRA_MAX_MUN, PhotoPickerActivity.DEFAULT_NUM);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-
-    public void changeNickname() {
-
-    }
-
     public void changeMobile() {
-
-    }
-
-    public void changeAddress() {
-
+        Intent intent = new Intent(getActivity(), PhoneSettingActivity.class);
+        startActivity(intent);
     }
 
     public void setNotication() {
         Intent intent = new Intent(getActivity(), PushSettingsActivity.class);
-        startActivity(intent);
-    }
-
-    public void setChatRecord() {
-        Intent intent = new Intent(getActivity(), ChatRecordSettingsActivity.class);
         startActivity(intent);
     }
 
@@ -140,11 +123,14 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     public void about() {
-
+        Intent intent = new Intent(getActivity(), AboutUsActivity.class);
+        startActivity(intent);
     }
 
     public void logout() {
+        NIMClient.getService(AuthService.class).logout();
         AppCookie.getInstance().doLogout(getActivity());
+
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
     }

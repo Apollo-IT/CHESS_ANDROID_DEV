@@ -14,6 +14,7 @@ import com.app.hrms.helper.LogHelper;
 import com.app.hrms.model.LogInfo;
 import com.app.hrms.utils.Utils;
 import com.bigkoo.svprogresshud.SVProgressHUD;
+import com.garymansell.SweetAlert.SweetAlertDialog;
 
 import java.sql.Date;
 
@@ -73,7 +74,22 @@ public class LogDetailsActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void showError(String msg){
+        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("错误")
+                .setContentText(msg)
+                .setConfirmButtonColor(SweetAlertDialog.BLACK)
+                .setConfirmText("确认")
+                .show();
+    }
+
     public void saveLog(String release) {
+        if(jobDate.getText().toString().equals("")) { showError("日期不能为空"); return; }
+        if(jobTime.getText().toString().equals("")) { showError("工作时数不能为空"); return; }
+        if(jobLocation.getText().toString().equals("")) { showError("工作地点不能为空"); return; }
+        if(jobProperty.getText().toString().equals("")) { showError("工作性质不能为空"); return; }
+        if(jobContent.getText().toString().equals("")) { showError("工作内容不能为空"); return; }
+
         log.setDate(jobDate.getText().toString());
         log.setHour(jobTime.getText().toString());
         log.setPlace(jobLocation.getText().toString());

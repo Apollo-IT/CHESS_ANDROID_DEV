@@ -35,6 +35,7 @@ public class MemberModel implements Serializable {
     private String fatxt;
     private String pcode;
     private String cobjid;
+    private String coname;
     private String token;
 
     // For update pa1001
@@ -44,6 +45,13 @@ public class MemberModel implements Serializable {
     }
     public String getCobjid() {
         return cobjid;
+    }
+
+    public void setConame(String coname) {
+        this.coname = coname;
+    }
+    public String getConame() {
+        return coname;
     }
 
     public void setPernr(String pernr) {

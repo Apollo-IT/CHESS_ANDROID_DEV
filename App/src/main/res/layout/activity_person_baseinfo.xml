@@ -354,17 +354,8 @@
 						android:textSize="15sp"
 						android:text="入职日期: " />
 
-					<ImageView
-						android:id="@+id/imgCalendar1"
-						android:layout_width="26dp"
-						android:layout_height="26dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/icon_calendar"/>
-
 					<TextView
 						android:id="@+id/txtEndat"
-						android:layout_toLeftOf="@+id/imgCalendar1"
 						android:layout_toRightOf="@+id/enterLabel"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -391,18 +382,9 @@
 						android:textSize="15sp"
 						android:text="参加工作日期: " />
 
-					<ImageView
-						android:id="@+id/imgCalendar2"
-						android:layout_width="26dp"
-						android:layout_height="26dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/icon_calendar"/>
-
 					<TextView
 						android:id="@+id/txtJwdat"
 						android:layout_toRightOf="@+id/label1"
-						android:layout_toLeftOf="@+id/imgCalendar2"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="15dp"
@@ -428,18 +410,8 @@
 						android:textSize="15sp"
 						android:text="性        别: " />
 
-					<ImageView
-						android:id="@+id/imgDropdown1"
-						android:layout_width="10dp"
-						android:layout_height="8dp"
-						android:layout_marginRight="8dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/ic_dropdown"/>
-
 					<TextView
 						android:id="@+id/txtGesch"
-						android:layout_toLeftOf="@+id/imgDropdown1"
 						android:layout_toRightOf="@+id/label3"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -515,17 +487,8 @@
 						android:textSize="15sp"
 						android:text="出生日期: " />
 
-					<ImageView
-						android:id="@+id/imgCalendar3"
-						android:layout_width="26dp"
-						android:layout_height="26dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/icon_calendar"/>
-
 					<TextView
 						android:id="@+id/txtGbdat"
-						android:layout_toLeftOf="@+id/imgCalendar3"
 						android:layout_toRightOf="@+id/label2"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -551,18 +514,8 @@
 						android:textSize="15sp"
 						android:text="国        籍: " />
 
-					<ImageView
-						android:id="@+id/imgDropdown2"
-						android:layout_width="10dp"
-						android:layout_height="8dp"
-						android:layout_marginRight="8dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/ic_dropdown"/>
-
 					<TextView
 						android:id="@+id/txtNatio"
-						android:layout_toLeftOf="@+id/imgDropdown2"
 						android:layout_toRightOf="@+id/label4"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -589,20 +542,10 @@
 						android:textSize="15sp"
 						android:text="民        族: " />
 
-					<ImageView
-						android:id="@+id/imgDropdown3"
-						android:layout_width="10dp"
-						android:layout_height="8dp"
-						android:layout_marginRight="8dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/ic_dropdown"/>
-
 					<TextView
 						android:id="@+id/txtRacky"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_toLeftOf="@+id/imgDropdown3"
 						android:layout_toRightOf="@+id/label5"
 						android:layout_marginLeft="15dp"
 						android:layout_centerVertical="true"
@@ -676,18 +619,8 @@
 						android:textSize="15sp"
 						android:text="婚姻状态: " />
 
-					<ImageView
-						android:id="@+id/imgDropdown5"
-						android:layout_width="10dp"
-						android:layout_height="8dp"
-						android:layout_marginRight="8dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/ic_dropdown"/>
-
 					<TextView
 						android:id="@+id/txtFatxt"
-						android:layout_toLeftOf="@+id/imgDropdown5"
 						android:layout_toRightOf="@+id/label7"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -713,19 +646,9 @@
 						android:textSize="15sp"
 						android:text="政治面貌:" />
 
-					<ImageView
-						android:id="@+id/imgDropdown4"
-						android:layout_width="10dp"
-						android:layout_height="8dp"
-						android:layout_marginRight="8dp"
-						android:layout_centerVertical="true"
-						android:layout_alignParentRight="true"
-						android:src="@mipmap/ic_dropdown"/>
-
 					<TextView
 						android:id="@+id/txtPcode"
 						android:layout_toRightOf="@+id/label6"
-						android:layout_toLeftOf="@+id/imgDropdown4"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_centerVertical="true"

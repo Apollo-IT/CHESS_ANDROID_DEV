@@ -18,4 +18,8 @@ public class UserSetBaseActivity extends AppCompatActivity {
             currentUser = AppCookie.getInstance().getCurrentUser();
         }
     }
+    protected boolean isMyAccount(){
+        if(currentUser==null) return false;
+        return (currentUser.getPernr().equals(AppCookie.getInstance().getCurrentUser().getPernr()));
+    }
 }

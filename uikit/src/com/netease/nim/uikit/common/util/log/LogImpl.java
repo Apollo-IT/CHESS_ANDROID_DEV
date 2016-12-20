@@ -150,7 +150,8 @@ final class LogImpl {
 			
 			written = true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(message);
+			//e.printStackTrace();
 		}
 		
 		return written;

@@ -25,6 +25,8 @@ import com.app.hrms.R;
 import com.app.hrms.model.PunchInfo;
 import com.app.hrms.widget.RoundedImageView;
 
+import static com.app.hrms.R.id.redMark;
+
 /**
  * 日历gridview中的每一个item显示的textview
  * 
@@ -151,12 +153,17 @@ public class CalendarAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.calendar_item, null);
-			RoundedImageView redMark = (RoundedImageView)convertView.findViewById(R.id.redMark);
-			redMark.setOval(true);
+			convertView = LayoutInflater.from(context).inflate(R.layout.calendar_item_punch, null);
+			RoundedImageView redMark1 = (RoundedImageView)convertView.findViewById(R.id.redMark1);
+			RoundedImageView redMark2 = (RoundedImageView)convertView.findViewById(R.id.redMark2);
+			redMark1.setOval(true);
+			redMark2.setOval(true);
 		}
 		TextView textView = (TextView) convertView.findViewById(R.id.tvtext);
-		RoundedImageView redMark = (RoundedImageView)convertView.findViewById(R.id.redMark);
+		RoundedImageView redMark1 = (RoundedImageView)convertView.findViewById(R.id.redMark1);
+		RoundedImageView redMark2 = (RoundedImageView)convertView.findViewById(R.id.redMark2);
+		redMark1.setVisibility(View.GONE);
+		redMark2.setVisibility(View.GONE);
 
 		String d = dayNumber[position].split("\\.")[0];
 		String dv = dayNumber[position].split("\\.")[1];
@@ -164,17 +171,8 @@ public class CalendarAdapter extends BaseAdapter {
 		SpannableString sp = new SpannableString(d/* + "\n" + dv*/);
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		sp.setSpan(new RelativeSizeSpan(1.2f), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		/*
-		if (dv != null || dv != "") {
-			sp.setSpan(new RelativeSizeSpan(0.75f), d.length() + 1, dayNumber[position].length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		}
-		*/
-		// sp.setSpan(new ForegroundColorSpan(Color.MAGENTA), 14, 16,
-		// Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 		textView.setText(sp);
 		textView.setTextColor(Color.GRAY);
-
-		redMark.setVisibility(View.INVISIBLE);
 
 		if (position < daysOfMonth + dayOfWeek && position >= dayOfWeek) {
 			// 当前月信息显示
@@ -195,9 +193,32 @@ public class CalendarAdapter extends BaseAdapter {
 					calendar.setTime(punch.getDate());
 					if (Integer.parseInt(d) == punch.getDate().getDate()) {
 
-						if (punch.getIntype() != PunchInfo.NORMAL || punch.getOutype() != PunchInfo.NORMAL) {
-							redMark.setVisibility(View.VISIBLE);
+						switch (punch.getIntype()){
+							case 1: break;
+							case 2:
+								redMark1.setVisibility(View.VISIBLE);
+								redMark1.setBackgroundColor(Color.GREEN);
+								break;
+							case 4: case 5: case 6:
+								redMark1.setVisibility(View.VISIBLE);
+								redMark1.setBackgroundColor(Color.RED);
+								break;
 						}
+						switch (punch.getOutype()){
+							case 1:
+								redMark2.setVisibility(View.VISIBLE);
+								redMark2.setBackgroundColor(Color.parseColor("#f39800"));
+								break;
+							case 3:
+								redMark2.setVisibility(View.VISIBLE);
+								redMark2.setBackgroundColor(Color.BLUE);
+								break;
+							case 4: case 6:
+								redMark2.setVisibility(View.VISIBLE);
+								redMark2.setBackgroundColor(Color.RED);
+								break;
+						}
+
 						break;
 					}
 				}
@@ -262,13 +283,10 @@ public class CalendarAdapter extends BaseAdapter {
 				j++;
 			}
 		}
-
 		String abc = "";
 		for (int i = 0; i < dayNumber.length; i++) {
 			abc = abc + dayNumber[i] + ":";
 		}
-		Log.d("DAYNUMBER", abc);
-
 	}
 
 	public void matchScheduleDate(int year, int month, int day) {

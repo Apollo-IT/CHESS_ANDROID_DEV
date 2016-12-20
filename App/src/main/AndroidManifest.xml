@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.EACCES" />
 
     <!-- TapJoy Permission -->
@@ -26,12 +25,12 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
     <!-- GPS -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_GPS" />
     <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <!-- Creates a custom permission so only this app can receive its messages. -->
     <permission
         android:name="com.app.hrms.permission.C2D_MESSAGE"
@@ -66,6 +65,9 @@
         <service
             android:name=".utils.gps.GPSService"
             android:process=":my_service" />
+        <service
+            android:name=".utils.notification.NotificationService"
+            android:process=":notice_service" />
 
         <activity
             android:name=".SplashActivity"
@@ -83,9 +85,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.lling.photopicker.PhotoPickerActivity"
-            android:screenOrientation="portrait" />
 
         <!-- Home -->
         <activity
@@ -311,6 +310,7 @@
 
         <!-- 申明自定义通知的广播接收器，第三方APP集成时，action中的com.netease.nim.demo请替换为自己的包名 -->
         <!-- 需要权限申明 <uses-permission android:name="com.netease.nim.demo.permission.RECEIVE_MSG"/> -->
+
         <receiver
             android:name=".message.receiver.CustomNotificationReceiver"
             android:enabled="true"
@@ -345,15 +345,19 @@
             android:name="com.netease.cosine.target.receiver"
             android:value="com.netease.nimlib.service.NimReceiver" />
 
-        <activity android:name=".ui.home.task.TaskDetailActivity"
+        <activity
+            android:name=".ui.home.task.TaskDetailActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-
-        <activity android:name=".ui.home.application.AppealDetailActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.home.application.AppealDetailActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".settings.AboutUsActivity" />
+        <activity android:name=".settings.PhoneSettingActivity" />
+        <activity android:name=".ui.home.training.TrainingDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -46,7 +46,8 @@ public class GPSService extends Service {
     private static void setLocation(Location location) {
         if (location == null) return;
         System.out.println("setLocation: " + location);
-        Position position = new Position(location.getLatitude()+0.001, location.getLongitude()+0.00607);
+//        Position position = new Position(location.getLatitude()+0.001, location.getLongitude()+0.00607);
+        Position position = new Position(location.getLatitude(), location.getLongitude());
         AppData.setCurrentPosition(position);
         if(onLocationChange!=null){
             onLocationChange.onLocationChange(location);
@@ -104,7 +105,7 @@ public class GPSService extends Service {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
         int interval = AppData.getGPSInterval();
-        if (interval < 60) interval = 60;
+        if (interval < 10) interval = 10;
         LOCATION_INTERVAL = interval * 1000;
     }
 
@@ -114,6 +115,16 @@ public class GPSService extends Service {
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate "+ new Timestamp(System.currentTimeMillis()).toString());
+
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //                                 On Start Command
+    //----------------------------------------------------------------------------------------------
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG, "onStartCommand");
+        super.onStartCommand(intent, flags, startId);
 
         initializeLocationManager();
         try {
@@ -142,15 +153,6 @@ public class GPSService extends Service {
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
-    }
-
-    //----------------------------------------------------------------------------------------------
-    //                                 On Start Command
-    //----------------------------------------------------------------------------------------------
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand");
-        super.onStartCommand(intent, flags, startId);
 
         return START_STICKY;
     }

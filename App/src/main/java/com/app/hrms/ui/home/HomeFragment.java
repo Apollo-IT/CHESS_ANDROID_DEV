@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ import com.app.hrms.widget.GalleryNavigator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
@@ -52,17 +55,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             R.drawable.intro_8
     };
 
-    private TextView logoutBtn;
+    private ViewPager pager;
+    private Timer timer;
     private GridView gridView;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
+    private View viewRoot;
+    MenuItemAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
-        logoutBtn = (TextView) viewRoot.findViewById(R.id.logout_btn);
-        logoutBtn.setOnClickListener(this);
-        ViewPager pager = (ViewPager)viewRoot.findViewById(R.id.pager);
+        viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
+        pager = (ViewPager)viewRoot.findViewById(R.id.pager);
         gridView = (GridView)viewRoot.findViewById(R.id.gridview);
         final GalleryNavigator navigator = (GalleryNavigator)viewRoot.findViewById(R.id.navigator);
         navigator.setSize(bitmapIDs.length);
@@ -77,18 +81,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
-
             @Override
             public void onPageSelected(int position) {
                 navigator.setPosition(position);
                 navigator.invalidate();
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
-
         globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -102,22 +103,25 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 menuList.add(new MenuItem("我的日志", R.mipmap.home_btn6));
                 menuList.add(new MenuItem("我的审批", R.mipmap.home_btn7));
                 menuList.add(new MenuItem("我的任务", R.mipmap.home_btn8));
-//        menuList.add(new MenuItem("我的报销", R.mipmap.home_btn9));
                 menuList.add(new MenuItem("我的下属", R.mipmap.home_btn10));
 
                 Resources r = getResources();
                 int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, r.getDisplayMetrics());
-                MenuItemAdapter adapter = new MenuItemAdapter(getActivity(), menuList, (gridView.getMeasuredHeight()-px)/3);
+                adapter = new MenuItemAdapter(getActivity(), menuList, (gridView.getMeasuredHeight()-px)/3);
                 gridView.setAdapter(adapter);
 
                 initGridView();
-                // removeOnGlobalLayoutListener()の削除
                 viewRoot.getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
             }
         };
         viewRoot.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
-
         return viewRoot;
+    }
+    public void onResume(){
+        super.onResume();
+        if(adapter!=null){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void initGridView() {
@@ -165,6 +169,41 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             }
         });
     }
+    //----------------------------------------------------------------------------------------------
+    //                                  Image Auto Slider
+    //----------------------------------------------------------------------------------------------
+    private void initTimer(){
+        final Handler handler = new Handler();
+        //pager.setCurrentItem(bitmapIDs.length-1);
+        final Runnable update = new Runnable() {
+            public void run() {
+                int currentPage = pager.getCurrentItem();
+                if (currentPage == bitmapIDs.length - 1) {
+                    currentPage = 0;
+                }else{
+                    currentPage ++;
+                }
+                pager.setCurrentItem(currentPage, true);
+            }
+        };
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        }, 5000, 5000);
+    }
+
+    public void onStart(){
+        super.onResume();
+        initTimer();
+    }
+    public void onStop(){
+        super.onStop();
+        timer.cancel();
+        System.out.println("Cancel Timer");
+    }
 
     @Override
     public void onUpdate(int serviceType) {
@@ -172,12 +211,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.logout_btn:
-                AppCookie.getInstance().doLogout(getActivity());
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                break;
-        }
+
     }
 }

@@ -42,8 +42,8 @@ public class PerformanceChartActivity extends ChartActivity{
         this.setChartTitle("下属考核分数比例");
         loadData();
 
-//        String memberID = AppCookie.getInstance().getCurrentUser().getPernr();
-//        this.showWebView(Urls.BASE_URL + Urls.API_ASSESS_WEBVIEW + memberID);
+        String memberID = AppCookie.getInstance().getCurrentUser().getPernr();
+        this.showWebView(Urls.BASE_URL + Urls.API_ASSESS_WEBVIEW + memberID);
     }
     /***********************************************************************************************
      *                                          Load Data
